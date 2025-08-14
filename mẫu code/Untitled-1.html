@@ -14,17 +14,35 @@
 <h2>Mini Canva</h2>
 <canvas id="canvas" width="800" height="500"></canvas>
 <br>
-<button id="addRect">Thêm khối vuông</button>
+<button id="addRectBlue">Thêm khối vuông màu xanh</button>
+<button id="addRectRed">Thêm khối vuông màu đỏ</button>
+<button id="addRectYellow">Thêm khối vuông màu vàng</button>
 <button id="addText">Thêm chữ</button>
 <button id="export">Xuất ảnh</button>
 
 <script>
   const canvas = new fabric.Canvas('canvas');
 
-  document.getElementById('addRect').onclick = () => {
+  document.getElementById('addRectRed').onclick = () => {
     const rect = new fabric.Rect({
       left: 100, top: 100,
-      fill: 'skyblue',
+      fill: 'red',
+      width: 100, height: 100
+    });
+    canvas.add(rect);
+  };
+  document.getElementById('addRectBlue').onclick = () => {
+    const rect = new fabric.Rect({
+      left: 100, top: 100,
+      fill: 'blue',
+      width: 100, height: 100
+    });
+    canvas.add(rect);
+  };
+  document.getElementById('addRectYellow').onclick = () => {
+    const rect = new fabric.Rect({
+      left: 100, top: 100,
+      fill: 'yellow',
       width: 100, height: 100
     });
     canvas.add(rect);
