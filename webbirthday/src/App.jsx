@@ -1,20 +1,41 @@
 import { useState } from 'react'
-
+import logoctu from './assets/logoctu.png';
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-    <div class="mx-auto flex max-w-sm items-center gap-x-4 rounded-xl bg-white p-6 shadow-lg outline outline-black/5 dark:bg-slate-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
-  <img class="size-12 shrink-0" src="/img/logo.svg" alt="ChitChat Logo" />
-  <div>
-    <div class="text-xl font-medium text-black dark:text-white">ChitChat</div>
-    <p class="text-gray-500 dark:text-gray-400">You have a new message!</p>
-  </div>
-</div>
-    </>
+    <div className="w-full min-h-screen flex">
+      <div id="InfoContainer" className="bg-[#00afef] w-[36%] min-h-screen rounded-[20px] "> 
+      </div>
+      <div id="LoginContainer" className="bg-white w-[64%] min-h-screen flex flex-col justify-end items-center">
+         <img src={logoctu} className="absolute top-0 right-0 max-w-[212px] m-4"></img>
+        <div id="LoginTitle ">
+            <p id="LoginTitleText" className="text-[6rem] mb-12">Đăng nhập</p>
+        </div>
+       
+        <div id="UsernameInput" className="bg-white w-[60%] h-[8rem] border-3 border-[#DADADA] mb-12 rounded-[20px]">
+          <input
+            type="text"
+            placeholder="Tên đăng nhập"
+            className="w-full h-full bg-transparent outline-none text-[4rem] px-10"></input>
+        </div>
+          
+        <div id="PasswordInput" className="bg-white w-[60%] h-[8rem] border-3 border-[#DADADA] mb-12 rounded-[20px]">
+          <input
+            type="text"
+            placeholder="Mật khẩu"
+            className="w-full h-full bg-transparent outline-none text-[4rem] px-10"></input>
+        </div>
+        <div id="LoginButton" className="bg-[#1f5ca9] w-[30%] h-auto px-0.5 rounded-[10px] mb-128">
+          <p id="LoginText" className="text-white text-center text-[4rem] py-2">Đăng nhập</p>
+          
+        </div>
+      </div>
+
+
+    </div>
   )
 }
 
