@@ -1,10 +1,8 @@
-
-import "./App.css";
+import styles from "./App.module.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Admin from "./components/Admin/Admin.jsx";
-
 import CardManager from "./components/CardManager/CardManager.jsx";
 
 function App() {
@@ -17,7 +15,7 @@ function App() {
         <Sidebar open={openSideBar} setOpen={setOpenSideBar} />
 
         {/* Main content */}
-        <div className={`main ${openSideBar ? "shifted" : ""}`}>
+        <div className={`${styles.main} ${openSideBar ? styles.mainShifted : ""}`}>
           <Routes>
             {/* Auto redirect khi vào web → /cards */}
             <Route path="/" element={<Navigate to="/cards" replace />} />

@@ -1,18 +1,18 @@
-// src/components/Admin/AdminTopSection/AdminTopSection.jsx
 import React from "react";
-import "./AdminTopSection.css";
+import styles from "./AdminTopSection.module.css";
 import { FaSearch } from "react-icons/fa";
+
 const AdminTopSection = () => {
   return (
-    <div className="admin-top-section">
-            <h1 className="admin-title">ACCOUNTS</h1>
-            <div className="top-actions">
-                {/* Search bar */}
-                <div className="search-bar">
-                <FaSearch className="search-icon" />
-                <input type="text" placeholder="Search" />
-                </div>
+    <div className={styles.adminTopSection}>
+      <h1 className={styles.adminTitle}>ACCOUNTS</h1>
+      <div className={styles.topActions}>
+        {/* Search bar */}
+        <div className={styles.searchBar}>
+          <FaSearch className={styles.searchIcon} />
+          <input type="text" placeholder="Search" />
         </div>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,7 @@
 import React from "react";
 import AdminTopSection from "./AdminTopSection/AdminTopSection";
 import AdminBottomSection from "./AdminBottomSection/AdminBottomSection";
-import "./Admin.css";
+import "./Admin.module.css";
 
 const Admin = () => {
   return (

@@ -1,18 +1,17 @@
-// src/components/Sidebar/Sidebar.jsx
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { TbCards } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
-import "./Sidebar.css";
+import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ open, setOpen }) => {
   return (
-    <div className={`sidebar ${open ? "open" : "collapsed"}`}>
+    <div className={`${styles.sidebar} ${open ? styles.sidebarOpen : styles.sidebarCollapsed}`}>
       {/* Toggle */}
-      <div className="sidebar-header">
+      <div className={styles.sidebarHeader}>
         <button
-          className={`toggle-btn ${open ? "shifted" : ""}`}
+          className={`${styles.toggleBtn} ${open ? styles.toggleBtnShifted : ""}`}
           onClick={() => setOpen(!open)}
         >
           <FaBars />
@@ -20,27 +19,27 @@ const Sidebar = ({ open, setOpen }) => {
       </div>
 
       {/* Menu items */}
-      <ul>
-        <li>
+      <ul className={styles.menuList}>
+        <li className={styles.menuItem}>
           <NavLink 
             to="/home" 
-            className={({ isActive }) => 
-              isActive ? "active-link" : ""
-            }
+            className={({ isActive }) => isActive ? "active-link" : ""}
           >
-            <CgProfile color = "black"/>
-            {open && <span className="menu-text">Cá nhân</span>}
+            <CgProfile color="black" />
+            <span className={`${styles.menuText} ${!open ? styles.sidebarCollapsedText : ""}`}>
+              Cá nhân
+            </span>
           </NavLink>
         </li>
-        <li>
+        <li className={styles.menuItem}>
           <NavLink 
             to="/cards" 
-            className={({ isActive }) => 
-              isActive ? "active-link" : ""
-            }
+            className={({ isActive }) => isActive ? "active-link" : ""}
           >
-            <TbCards color="black"/>
-            {open && <span className="menu-text">Quản lý thiệp</span>}
+            <TbCards color="black" />
+            <span className={`${styles.menuText} ${!open ? styles.sidebarCollapsedText : ""}`}>
+              Quản lý thiệp
+            </span>
           </NavLink>
         </li>
       </ul>

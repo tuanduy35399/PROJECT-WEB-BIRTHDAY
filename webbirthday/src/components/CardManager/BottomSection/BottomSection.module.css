@@ -1,4 +1,4 @@
-.bottom-section {
+.bottomSection {
     flex: 1;
     height: 75%;
     background-color: #bdc3c7;
@@ -10,26 +10,24 @@
     /* chặn tràn xuống ngoài */
 }
 
-.grid-container {
+.sectionTitle {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.gridContainer {
     flex: 1;
     display: grid;
     grid-template-columns: repeat(4, 260px);
     justify-content: space-between;
     gap: 20px;
     overflow-y: auto;
-    /* bây giờ chỉ scroll trong khung này */
+    /* chỉ scroll trong khung này */
     padding-right: 10px;
     margin-left: 20px;
 }
 
-.section-title {
-    font-size: 24px;
-    margin-bottom: 15px;
-}
-
-
-/* Card 5/5 */
-.rect-card {
+.rectCard {
     width: 260px;
     height: 350px;
     background-color: white;
@@ -42,27 +40,23 @@
     transition: transform 0.2s ease;
 }
 
-/* Phần top 50% chứa ảnh */
-.rect-card .card-top {
+.cardTop {
     flex: 1;
     overflow: hidden;
 }
 
-.rect-card .card-top img {
+.cardTop img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* crop ảnh nếu quá to */
 }
 
-/* Divider */
-.rect-card .divider {
+.divider {
     height: 2px;
     background-color: #bdc3c7;
 }
 
-/* Phần bottom 50% chứa text */
-.rect-card .card-bottom {
+.cardBottom {
     flex: 1;
     padding: 8px;
     display: flex;
@@ -72,11 +66,10 @@
     color: #333;
 }
 
-.rect-card .card-bottom p {
+.cardBottom p {
     margin: 2px 0;
 }
 
-/* Hover scale */
-.rect-card:hover {
+.rectCard:hover {
     transform: scale(1.05);
 }

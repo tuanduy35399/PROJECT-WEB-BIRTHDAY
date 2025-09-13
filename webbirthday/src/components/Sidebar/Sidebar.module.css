@@ -1,4 +1,3 @@
-/* Thanh sidebar chung */
 .sidebar {
     position: fixed;
     top: 0;
@@ -14,22 +13,18 @@
     flex-direction: column;
 }
 
-/* Khi mở rộng */
-.sidebar.open {
+.sidebarOpen {
     width: 220px;
 }
 
-/* Khi thu gọn */
-.sidebar.collapsed {
+.sidebarCollapsed {
     width: 60px;
 }
 
-/* Nút toggle */
-.toggle-btn {
+.toggleBtn {
     position: absolute;
     top: 15px;
     left: 10px;
-    /* mặc định ở trong sidebar hẹp */
     background: none;
     border: none;
     color: black;
@@ -37,7 +32,8 @@
     cursor: pointer;
     transition: left 0.3s ease;
 }
-.sidebar-header {
+
+.sidebarHeader {
     height: 50px;
     display: flex;
     align-items: center;
@@ -45,18 +41,18 @@
     padding: 0 10px;
     position: relative;
 }
-.toggle-btn.shifted {
+
+.toggleBtnShifted {
     left: 190px;
-    /* di chuyển ra mép phải khi sidebar mở (220px - button width ~30px) */
 }
-/* Menu items */
-.sidebar ul {
+
+.menuList {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.sidebar li {
+.menuItem {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -65,23 +61,19 @@
     border-radius: 4px;
 }
 
-.sidebar li:hover {
+.menuItem:hover {
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* Text luôn tồn tại nhưng có animation */
-.menu-text {
+.menuText {
     color: black;
     white-space: nowrap;
     opacity: 1;
     transition: opacity 0.3s ease, margin 0.3s ease;
 }
 
-/* Khi sidebar collapsed → ẩn chữ */
-.sidebar.collapsed .menu-text {
+.sidebarCollapsedText {
     opacity: 0;
     margin-left: -10px;
-    /* kéo nhẹ vào để gọn */
     pointer-events: none;
-    /* không bấm được chữ */
 }

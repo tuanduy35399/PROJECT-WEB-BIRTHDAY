@@ -1,15 +1,16 @@
-.main-content {
+.mainContent {
     display: flex;
     flex-direction: column;
     height: 100vh;
     /* quan trọng để % hoạt động */
 }
-.top-section {
+
+.topSection {
     flex: 0 0 25%;
     /* chiếm 25% chiều cao */
 }
 
-.bottom-section {
+.bottomSection {
     flex: 1;
     /* chiếm phần còn lại ~75% */
 }

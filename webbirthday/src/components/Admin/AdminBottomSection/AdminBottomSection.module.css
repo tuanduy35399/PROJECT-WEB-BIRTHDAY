@@ -1,4 +1,4 @@
-.admin-bottom-section {
+.adminBottomSection {
     height: 75%;
     background-color: white;
     padding: 20px;
@@ -7,15 +7,15 @@
 }
 
 /* Table dạng list */
-.account-table {
+.accountTable {
     width: 100%;
     border-collapse: collapse;
     background-color: transparent;
     /* bỏ khung ngoài */
 }
 
-.account-table th,
-.account-table td {
+.accountTable th,
+.accountTable td {
     padding: 12px 15px;
     text-align: left;
     font-size: 14px;
@@ -23,14 +23,14 @@
     /* chỉ line dưới */
 }
 
-.account-table th {
+.accountTable th {
     background: none;
     /* không background */
     font-weight: bold;
     color: #333;
 }
 
-.account-table tr:hover td {
+.accountTable tr:hover td {
     background-color: #f9f9f9;
     /* hover nhẹ */
 }

@@ -7,6 +7,7 @@
     transition: margin-left 0.3s ease;
 }
 
-.main.shifted {
+.mainShifted {
     margin-left: 230px;
+    /* khi sidebar mở */
 }

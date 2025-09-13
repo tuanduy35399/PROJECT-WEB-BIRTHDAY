@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./AdminBottomSection.css";
+import styles from "./AdminBottomSection.module.css";
 import UserDetailDrawer from "../UserDetailDrawer/UserDetailDrawer";
 
 const AdminBottomSection = () => {
@@ -44,8 +44,8 @@ const AdminBottomSection = () => {
   };
 
   return (
-    <div className="admin-bottom-section">
-      <table className="account-table">
+    <div className={styles.adminBottomSection}>
+      <table className={styles.accountTable}>
         <thead>
           <tr>
             <th>Username</th>
@@ -71,7 +71,10 @@ const AdminBottomSection = () => {
       </table>
 
       {/* Drawer hiển thị khi chọn user */}
-      <UserDetailDrawer user={selectedUser} onClose={() => setSelectedUser(null)} />
+      <UserDetailDrawer
+        user={selectedUser}
+        onClose={() => setSelectedUser(null)}
+      />
     </div>
   );
 };

@@ -1,5 +1,4 @@
-/* overlay mờ */
-.drawer-overlay {
+.drawerOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -11,7 +10,6 @@
     z-index: 999;
 }
 
-/* drawer bên phải */
 .drawer {
     background: white;
     width: 350px;
@@ -33,7 +31,7 @@
     }
 }
 
-.close-btn {
+.closeBtn {
     background: none;
     border: none;
     font-size: 18px;

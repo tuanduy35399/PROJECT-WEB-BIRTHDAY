@@ -1,17 +1,16 @@
-// src/components/Admin/UserDetailDrawer/UserDetailDrawer.jsx
 import React from "react";
-import "./UserDetailDrawer.css";
+import styles from "./UserDetailDrawer.module.css";
 
 const UserDetailDrawer = ({ user, onClose }) => {
   if (!user) return null;
 
   return (
-    <div className="drawer-overlay" onClick={onClose}>
+    <div className={styles.drawerOverlay} onClick={onClose}>
       <div
-        className="drawer"
+        className={styles.drawer}
         onClick={(e) => e.stopPropagation()} // tránh đóng khi click bên trong
       >
-        <button className="close-btn" onClick={onClose}>
+        <button className={styles.closeBtn} onClick={onClose}>
           ✖
         </button>
         <h2>User Detail</h2>
