@@ -1,42 +1,34 @@
-import { useState } from 'react'
-import logoctu from './assets/logoctu.png';
-import './App.css'
+
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useState } from "react";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Admin from "./components/Admin/Admin.jsx";
+
+import CardManager from "./components/CardManager/CardManager.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [openSideBar, setOpenSideBar] = useState(false);
 
   return (
-    <div className="w-full min-h-screen flex">
-      <div id="InfoContainer" className="bg-[#00afef] w-[36%] min-h-screen rounded-[20px] "> 
-      </div>
-      <div id="LoginContainer" className="bg-white w-[64%] min-h-screen flex flex-col justify-end items-center">
-         <img src={logoctu} className="absolute top-0 right-0 max-w-[312px] m-4"></img>
-        <div id="LoginTitle ">
-            <p id="LoginTitleText" className="text-[6rem] mb-12">Đăng nhập</p>
-        </div>
-       
-        <div id="UsernameInput" className="bg-white w-[60%] h-[8rem] border-3 border-[#DADADA] mb-14 rounded-[20px]">
-          <input
-            type="text"
-            placeholder="Tên đăng nhập"
-            className="w-full h-full bg-transparent outline-none text-[4rem] px-10"></input>
-        </div>
-          
-        <div id="PasswordInput" className="bg-white w-[60%] h-[8rem] border-3 border-[#DADADA] mb-14 rounded-[20px]">
-          <input
-            type="text"
-            placeholder="Mật khẩu"
-            className="w-full h-full bg-transparent outline-none text-[4rem] px-10"></input>
-        </div>
-        <div id="LoginButton" className="bg-[#1f5ca9] w-[30%] h-auto px-0.5 rounded-[10px] mb-112">
-          <p id="LoginText" className="text-white text-center text-[4rem] py-2">Đăng nhập</p>
-          
+    <Router>
+      <div className="app">
+        {/* Sidebar mặc định */}
+        <Sidebar open={openSideBar} setOpen={setOpenSideBar} />
+
+        {/* Main content */}
+        <div className={`main ${openSideBar ? "shifted" : ""}`}>
+          <Routes>
+            {/* Auto redirect khi vào web → /cards */}
+            <Route path="/" element={<Navigate to="/cards" replace />} />
+
+            <Route path="/home" element={<Admin />} />
+            <Route path="/cards" element={<CardManager />} />
+          </Routes>
         </div>
       </div>
-
-
-    </div>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;

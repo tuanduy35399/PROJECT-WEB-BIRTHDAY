@@ -1,0 +1,43 @@
+/* overlay mờ */
+.drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: flex-end;
+    z-index: 999;
+}
+
+/* drawer bên phải */
+.drawer {
+    background: white;
+    width: 350px;
+    height: 100%;
+    padding: 20px;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s ease forwards;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-bottom: 10px;
+}

@@ -1,1 +1,12 @@
-@import "tailwindcss";
+.main {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin-left: 70px;
+    /* khi sidebar collapsed */
+    transition: margin-left 0.3s ease;
+}
+
+.main.shifted {
+    margin-left: 230px;
+}

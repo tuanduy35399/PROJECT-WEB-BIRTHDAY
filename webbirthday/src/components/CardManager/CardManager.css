@@ -1,0 +1,15 @@
+.main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* quan trọng để % hoạt động */
+}
+.top-section {
+    flex: 0 0 25%;
+    /* chiếm 25% chiều cao */
+}
+
+.bottom-section {
+    flex: 1;
+    /* chiếm phần còn lại ~75% */
+}
