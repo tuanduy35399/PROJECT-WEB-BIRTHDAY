@@ -1,6 +1,8 @@
 import './Login.css'
 import { useState } from 'react'
-export default function Login(){
+export default function Login(props){
+    
+    const {onLogin} = props
     const [inputEmail, setInputEmail]=useState("");
     const [inputPassword, setInputPassword]=useState("");
     // const [isNotValid, setIsNotValid] = useState(false);
@@ -23,7 +25,7 @@ export default function Login(){
     const emailInvalid= (submit && inputEmail!="" && !inputEmail.includes("@"));
     const passwordInvalid= (submit && inputPassword!="" && (inputPassword.trim()).length<6);
     return (
-       <>
+       <div className='login-container'>
         <div className="layout_login">
             <div className="header">
                 <div className="circle"></div>
@@ -37,8 +39,8 @@ export default function Login(){
                 <input className={`form-input2 ${passwordInvalid?"invalid":undefined}`} type="password" placeholder="Password"
                 value={inputPassword} onChange={(e)=>handleInputChange("password",e.target.value)}/>
                 {(passwordInvalid) && <p style={{ color: "red", margin:"0px"}}>Password phải chứa ít nhất 6 ký tự</p>}
-                <button type="submit" >Đăng nhập</button>
+                <button type="submit" onClick={()=> onLogin()}>Đăng nhập</button>
             </form>
         </div>
-       </>
+       </div>
 )}
