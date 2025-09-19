@@ -1,18 +1,24 @@
-
-@import url('https://fonts.googleapis.com/css2?family=K2D:wght@400;700&display=swap');
-
-
-html, body, #root {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  font-family: 'K2D', sans-serif;
+html,body{
+    padding:0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
 }
-
-#root {
-
-  background-color: #ffffff;
-
-  
+body{
+    height: 100vh;
+    max-width: 100%;
+    background-image:url(/background-hpbd-PC.jpg);
+    background-size:cover;  /* phóng hình vừa khít màn hình, không méo */
+    background-position: center; /* căn giữa */     
+    background-repeat: no-repeat; /* không lặp lại */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+@media(max-width:720px) {
+    body{
+    justify-content: center;
+    align-items: center;
+    background-image: url(/background-hpbd-smartphone.JPG);
+    }
 }
