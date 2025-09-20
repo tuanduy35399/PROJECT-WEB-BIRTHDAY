@@ -1,0 +1,79 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #F8FAFD;
+    color: #F8FAFD;
+    padding: 10px;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    transition: width 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebarOpen {
+    width: 220px;
+}
+
+.sidebarCollapsed {
+    width: 60px;
+}
+
+.toggleBtn {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    background: none;
+    border: none;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+    transition: left 0.3s ease;
+}
+
+.sidebarHeader {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 10px;
+    position: relative;
+}
+
+.toggleBtnShifted {
+    left: 190px;
+}
+
+.menuList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menuItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.menuItem:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.menuText {
+    color: black;
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.3s ease, margin 0.3s ease;
+}
+
+.sidebarCollapsedText {
+    opacity: 0;
+    margin-left: -10px;
+    pointer-events: none;
+}

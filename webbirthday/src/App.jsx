@@ -1,16 +1,21 @@
-import { useState } from 'react'
-import Toolbox from './components/editpage/Toolbox';
-import './App.css'
-import EditPage from './components/editpage/EditPage';
+import React, { useState } from "react";
+import Login from "./components/Login/Login.jsx";
+import MainApp from "./components/MainApp/MainApp.jsx";
 
-function App() {
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+  
   return (
-    <div>
-      <EditPage/>
-    </div>
+    <>
+      {isLoggedIn ? (
+        <MainApp />
+      ) : (
+        <Login onLogin={handleLogin} />
+      )}
+    </>
   );
 }
-
-export default App

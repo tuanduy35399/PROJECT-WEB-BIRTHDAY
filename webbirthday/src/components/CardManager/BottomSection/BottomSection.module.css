@@ -1,0 +1,75 @@
+.bottomSection {
+    flex: 1;
+    height: 75%;
+    background-color: #bdc3c7;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* chặn tràn xuống ngoài */
+}
+
+.sectionTitle {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.gridContainer {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 260px);
+    justify-content: space-between;
+    gap: 20px;
+    overflow-y: auto;
+    /* chỉ scroll trong khung này */
+    padding-right: 10px;
+    margin-left: 20px;
+}
+
+.rectCard {
+    width: 260px;
+    height: 350px;
+    background-color: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* crop ảnh */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.cardTop {
+    flex: 1;
+    overflow: hidden;
+}
+
+.cardTop img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.divider {
+    height: 2px;
+    background-color: #bdc3c7;
+}
+
+.cardBottom {
+    flex: 1;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 14px;
+    color: #333;
+}
+
+.cardBottom p {
+    margin: 2px 0;
+}
+
+.rectCard:hover {
+    transform: scale(1.05);
+}
