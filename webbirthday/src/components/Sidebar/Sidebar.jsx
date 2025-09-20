@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { TbCards } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
+import { MdEdit } from "react-icons/md";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ open, setOpen }) => {
@@ -39,6 +40,21 @@ const Sidebar = ({ open, setOpen }) => {
             <TbCards color="black" />
             <span className={`${styles.menuText} ${!open ? styles.sidebarCollapsedText : ""}`}>
               Quản lý thiệp
+            </span>
+          </NavLink>
+        </li>
+         <li className={styles.menuItem}>
+          <NavLink
+            to="/edit"
+            className={({ isActive }) => (isActive ? "active-link" : "")}
+          >
+            <MdEdit color="black" />
+            <span
+              className={`${styles.menuText} ${
+                !open ? styles.sidebarCollapsedText : ""
+              }`}
+            >
+              Chỉnh sửa
             </span>
           </NavLink>
         </li>

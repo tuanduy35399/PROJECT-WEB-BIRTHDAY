@@ -1,7 +1,10 @@
-/* Thêm vào đầu file CSS của bạn hoặc trong global CSS */
 html,
-body {
+body,
+#root {
+    height: 100%;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #ecf0f1;
+    /* màu nền mặc định, không bị lộ trắng */
 }
