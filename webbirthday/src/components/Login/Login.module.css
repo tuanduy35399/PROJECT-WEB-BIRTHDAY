@@ -1,18 +1,17 @@
-.layout_login {
+.layoutLogin {
     width: 400px;
     height: 500px;
     background-color: #fff;
     border-radius: 2%;
-    /* opacity: 80%; */
     text-align: center;
     margin: 100px 200px auto auto;
     overflow: hidden;
-    /*cắt phần thừa để còn bo góc*/
     box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.348);
 }
 
-@media(max-width:720px) {
-    .layout_login {
+
+@media (max-width: 720px) {
+    .layoutLogin {
         margin: 20% auto;
     }
 }
@@ -22,7 +21,6 @@
     height: 64px;
     display: flex;
     justify-content: center;
-    /* border: 4px solid black; */
 }
 
 .circle {
@@ -41,12 +39,10 @@
 
 .circle:hover {
     background-image: url("/logo-cake.png");
-    /* background-color: rgb(229, 134, 209); */
     transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
 }
-
 
 .form {
     display: flex;
@@ -56,18 +52,16 @@
     margin: 20px auto;
 }
 
-.form-input1.invalid,
-.form-input2.invalid {
+.formInput1Invalid,
+.formInput2Invalid {
     border: 2px solid red;
 }
 
-.form-title {
+.formTitle {
     font-size: 30px;
-    /* margin-top: 40px; */
 }
 
-input[type="text"],
-input[type="password"] {
+.textInput {
     border-radius: 8px;
     padding-left: 20px;
     width: 340px;
@@ -79,7 +73,7 @@ input[type="password"] {
     font-size: 14px;
 }
 
-button[type="submit"] {
+.submitButton {
     width: 200px;
     padding: 10px;
     margin-top: 40px;
@@ -90,47 +84,32 @@ button[type="submit"] {
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
-    transition: background-color 0.5s;
-    transition: 0.5s ease;
+    transition: background-color 0.5s, transform 0.5s ease;
 }
 
-button[type="submit"]:hover {
+.submitButton:hover {
     background-color: #578bb5;
     transform: scale(1.1);
     -webkit-transform: scale(1.1);
     -moz-transform: scale(1.1);
 }
 
-
-html,
-body {
-    padding: 0;
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    box-sizing: border-box;
-}
-
-
-.login-container {
-
+.loginContainer {
     height: 100vh;
     max-width: 100%;
-    background-image: url(/background-hpbd-PC.jpg);
+    background-image: url("/background-hpbd-PC.jpg");
     background-size: cover;
-    /* phóng hình vừa khít màn hình, không méo */
     background-position: center;
-    /* căn giữa */
     background-repeat: no-repeat;
-    /* không lặp lại */
     display: flex;
     justify-content: flex-end;
     align-items: center;
 }
 
-@media(max-width:720px) {
-    body {
+@media (max-width: 720px) {
+    .loginContainer {
         justify-content: center;
         align-items: center;
-        background-image: url(/background-hpbd-smartphone.JPG);
+        background-image: url("/background-hpbd-smartphone.JPG");
     }
 }
