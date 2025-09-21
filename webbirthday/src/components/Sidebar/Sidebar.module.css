@@ -14,11 +14,11 @@
 }
 
 .sidebarOpen {
-    width: 220px;
+    width: 230px;
 }
 
 .sidebarCollapsed {
-    width: 62px;
+    width: 70px;
 }
 
 .sidebarHeader {
@@ -52,29 +52,34 @@
     padding: 0;
     margin: 0;
 }
-.menuLink {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none; /* bỏ gạch chân link */
-  color: black; /* giữ màu text */
+
+.menuList li {
+    padding: 0;
+    margin: 0;
 }
+
 .menuItem {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 12px;
-    cursor: pointer;
     border-radius: 4px;
-    transition: background 0.5s ease, transform 0.5s ease;
+    transition: background 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    color: black;
+    width: 100vw;
+    min-height: 40px;
+    /* đảm bảo không bị collapse */
+    box-sizing: border-box;
 }
 
-.menuItem.activeLink {
-  background: rgba(35, 123, 224, 0.2);
-  transform: scale(1.05);
-}
 .menuItem:hover {
     background: rgba(35, 123, 224, 0.1);
+}
+
+.activeLink {
+    background: rgba(35, 123, 224, 0.2);
+    transform: scale(1.005);
 }
 
 .menuText {
@@ -82,10 +87,13 @@
     white-space: nowrap;
     opacity: 1;
     transition: opacity 0.3s ease, margin 0.3s ease;
+    display: inline-block;
 }
 
 .sidebarCollapsedText {
     opacity: 0;
-    margin-left: -10px;
+    width: 0;
+    margin: 0;
+    overflow: hidden;
     pointer-events: none;
 }
