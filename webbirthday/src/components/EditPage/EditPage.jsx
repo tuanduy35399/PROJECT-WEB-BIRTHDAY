@@ -1,3 +1,4 @@
+import "./EditPage.module.css";
 import PropertiesTab from "./PropertiesTab";
 import Toolbox from "./Toolbox";
 import * as fabric from 'fabric';
@@ -62,7 +63,7 @@ export default function EditPage(){
 
 
     return (
-        <div className="relative h-screen">
+        <div className="relative h-screen w-full">
             <Toolbox penMode={penMode} setPenMode={setPenMode}></Toolbox>
             
             <PropertiesTab></PropertiesTab>

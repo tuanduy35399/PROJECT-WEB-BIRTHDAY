@@ -1,6 +1,9 @@
 // tailwind.config.js
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  corePlugins: {
+        preflight: false,
+      },
   safelist: [
     "w-[5rem]",
     "w-[10rem]",

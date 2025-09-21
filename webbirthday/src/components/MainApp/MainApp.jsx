@@ -5,7 +5,8 @@ import { useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import Admin from "../Admin/Admin.jsx";
 import CardManager from "../CardManager/CardManager.jsx";
-import EditPage from "../editpage/EditPage.jsx";
+
+import EditPage from "../EditPage/EditPage.jsx";
 function MainApp() {
     const [openSideBar, setOpenSideBar] = useState(false);
   return (
