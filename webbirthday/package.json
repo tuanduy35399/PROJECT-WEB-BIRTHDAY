@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.12",
+    "axios": "^1.12.2",
     "fabric": "^6.7.1",
     "fabricjs-react": "^1.2.2",
     "react": "^19.1.1",

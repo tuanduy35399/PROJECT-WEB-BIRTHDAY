@@ -1,12 +1,13 @@
 import styles from './Login.module.css'
 import { useState } from 'react'
-
-export default function Login(props) {
-    const { onLogin } = props
+import axios from 'axios'
+export default function Login({onLogin}) {
 
     const [inputEmail, setInputEmail] = useState("")
     const [inputPassword, setInputPassword] = useState("")
     const [submit, setSubmit] = useState(false)
+    //check error
+    const [errMsg, setErrMsg] = useState("");
 
     function handleInputChange(ident, value) {
         if (ident === "email") {
@@ -16,10 +17,26 @@ export default function Login(props) {
         }
     }
 
-    function handleSubmit(e) {
+    const handleSubmit= async (e)=> {
         e.preventDefault()
         setSubmit(true)
-        // Call backend here later
+        setErrMsg("");
+
+        try {
+            const res = await axios.post("http://localhost:5000/api/users/login", {
+                username: inputEmail,
+                password: inputPassword,
+            })
+            //Luu token vao trong localStorage cho lan dang nhap do
+            localStorage.setItem("token", res.data.token);
+            //Goi ham on Login de chuyen de MainApp
+            onLogin();
+        }catch (err) {
+        console.error(err)
+            setErrMsg(
+                err.response?.data?.message || "Đăng nhập thất bại, thử lại!"
+            )
+        } 
     }
 
     const emailInvalid = submit && inputEmail !== "" && !inputEmail.includes("@")
@@ -60,10 +77,11 @@ export default function Login(props) {
                         </p>
                     )}
 
+
+                    {errMsg && <p style={{ color: "red" }}>{errMsg}</p>}
                     <button
                         type="submit"
                         className={styles.submitButton}
-                        onClick={() => onLogin()}
                     >
                         Đăng nhập
                     </button>
