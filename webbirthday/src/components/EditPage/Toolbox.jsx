@@ -1,6 +1,6 @@
 import Tool from "./Tool";
 import { useState } from "react";
-export default function Toolbox(){
+export default function Toolbox({penMode, setPenMode}){
     const [colNum, setColNum] = useState(5);
     const [selected, setSelected] = useState("");
     const cols = {
@@ -26,7 +26,7 @@ export default function Toolbox(){
             <div className={`relative mx-auto shadow-sm shadow-black grid ${cols} h-full ${getSize()} rounded-[15px] bg-[#81C4F0] items-center justify-items-center`}>
                     {
                         toolNames.slice(0,colNum).map((toolName)=>(
-                            <Tool key={toolName} tool={toolName} selected={selected} setSelected={setSelected}></Tool>
+                            <Tool key={toolName} tool={toolName} selected={selected} setSelected={setSelected} penMode={penMode} setPenMode={setPenMode}></Tool>
                         ))
 
                     }

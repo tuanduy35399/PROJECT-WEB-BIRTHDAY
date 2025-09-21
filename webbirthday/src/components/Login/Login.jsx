@@ -39,7 +39,7 @@ export default function Login({onLogin}) {
         } 
     }
 
-    const emailInvalid = submit && inputEmail !== "" && !inputEmail.includes("@")
+    const emailInvalid = submit && inputEmail !== "" && !inputEmail.includes("@");
     const passwordInvalid = submit && inputPassword !== "" && inputPassword.trim().length < 6
 
     return (
