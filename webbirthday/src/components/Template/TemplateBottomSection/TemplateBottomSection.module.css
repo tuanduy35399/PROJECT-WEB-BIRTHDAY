@@ -1,6 +1,6 @@
 .bottomSection {
     flex: 1;
-    height: 75%;
+    max-height: 550px;
     /* background-color: #bdc3c7; */
     /* padding: 30px; */
     box-sizing: border-box;
@@ -17,6 +17,7 @@
 }
 
 .gridContainer {
+    /* height: 100vh; */
     flex: 1;
     display: grid;
     grid-template-columns: repeat(5, auto);

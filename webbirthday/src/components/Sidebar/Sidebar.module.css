@@ -18,19 +18,7 @@
 }
 
 .sidebarCollapsed {
-    width: 60px;
-}
-
-.toggleBtn {
-    position: absolute;
-    top: 15px;
-    left: 10px;
-    background: none;
-    border: none;
-    color: black;
-    font-size: 20px;
-    cursor: pointer;
-    transition: left 0.3s ease;
+    width: 62px;
 }
 
 .sidebarHeader {
@@ -42,8 +30,21 @@
     position: relative;
 }
 
+.toggleBtn {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    background: none;
+    border: none;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
 .toggleBtnShifted {
-    left: 190px;
+    transform: rotate(90deg);
+-webkit-transform: rotate(90deg);
+-moz-transform: rotate(90deg);
 }
 
 .menuList {
@@ -51,7 +52,13 @@
     padding: 0;
     margin: 0;
 }
-
+.menuLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none; /* bỏ gạch chân link */
+  color: black; /* giữ màu text */
+}
 .menuItem {
     display: flex;
     align-items: center;
@@ -59,10 +66,15 @@
     padding: 12px;
     cursor: pointer;
     border-radius: 4px;
+    transition: background 0.5s ease, transform 0.5s ease;
 }
 
+.menuItem.activeLink {
+  background: rgba(35, 123, 224, 0.2);
+  transform: scale(1.05);
+}
 .menuItem:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(35, 123, 224, 0.1);
 }
 
 .menuText {
