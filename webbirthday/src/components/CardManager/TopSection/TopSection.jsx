@@ -15,15 +15,15 @@ const TopSection = () => {
   return (
     <div className={styles.topSection}>
       <div className={styles.containWrapper}>
-        <div>
+        <div className={styles.imgContainer}>
           <h1 className={styles.title}>CARDS</h1>
           <button className={styles.pillBtn} onClick={() => setOpenDrawer(true)} >
-            + NEW
+            + NEW 
           </button>
         </div>
-        <div className={styles.imgContainer}>
+        {/* <div className={styles.imgContainer}>
           <img src={bg} alt="Top Illustration" />
-        </div>
+        </div> */}
       </div>
 
       {/* Drawer */}

@@ -1,24 +1,25 @@
 .bottomSection {
     flex: 1;
     height: 75%;
-    background-color: #bdc3c7;
-    padding: 20px;
+    /* background-color: #bdc3c7; */
+    /* padding: 30px; */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    /* overflow: hidden; */
     /* chặn tràn xuống ngoài */
 }
 
 .sectionTitle {
     font-size: 24px;
     margin-bottom: 15px;
+    color: black;
 }
 
 .gridContainer {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(4, 260px);
+    grid-template-columns: repeat(5, auto);
     justify-content: space-between;
     gap: 20px;
     overflow-y: auto;

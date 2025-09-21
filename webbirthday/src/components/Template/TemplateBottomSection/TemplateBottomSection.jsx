@@ -19,7 +19,7 @@ const TemplateBottomSection = () => {
   }, []);
 
   return (
-    <div className={styles.TemplateBottomSection}>
+    <div className={styles.bottomSection}>
       <h2 className={styles.sectionTitle}>All Templates</h2>
       <div className={styles.gridContainer}>
         {templates.map((template) => (
