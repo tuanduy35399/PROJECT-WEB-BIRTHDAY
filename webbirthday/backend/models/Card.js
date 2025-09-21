@@ -2,15 +2,15 @@ import mongoose from "mongoose";
 
 const cardSchema = new mongoose.Schema(
   {
-    cardID: { type: String, required: true, unique: true },
+    cardID: { type: String, required: true, unique: true }, // custom ID
     cardName: { type: String, required: true },
     isEditable: { type: Boolean, default: true },
     imgURL: [{ type: String }],
-    lastEdit: { type: Date, default: Date.now },
     cardDESC: { type: String },
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // user sở hữu
+    fabricEdit: { type: Object }, // JSON object từ FabricJS
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
-  { timestamps: true }
+  { timestamps: true } // đã có createdAt + updatedAt
 );
 
 const Card = mongoose.model("Card", cardSchema);

@@ -1,30 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styles from "./BottomSection.module.css";
 
-// Mảng demo card
-const cardsData = Array.from({ length: 12 }, (_, i) => ({
-  id: i + 1,
-  image: "https://via.placeholder.com/300x150", // ảnh minh họa tạm
-  title: `Card ${i + 1}`,
-  date: "2025-09-13",
-  creator: "User A",
-}));
-
 const BottomSection = () => {
+  const [cardsData, setCardsData] = useState([]);
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/cards");
+        setCardsData(res.data);
+      } catch (err) {
+        console.error("Error fetching cards:", err);
+      }
+    };
+
+    fetchCards();
+  }, []);
+
   return (
     <div className={styles.bottomSection}>
       <h2 className={styles.sectionTitle}>Recent</h2>
       <div className={styles.gridContainer}>
         {cardsData.map((card) => (
-          <div key={card.id} className={styles.rectCard}>
+          <div key={card._id} className={styles.rectCard}>
             <div className={styles.cardTop}>
-              <img src={card.image} alt={card.title} />
+              <img
+                src={card.imgURL?.[0] || "https://via.placeholder.com/300x150"}
+                alt={card.cardName}
+              />
             </div>
             <div className={styles.divider}></div>
             <div className={styles.cardBottom}>
-              <p><strong>{card.title}</strong></p>
-              <p>{card.date}</p>
-              <p>{card.creator}</p>
+              <p>
+                <strong>{card.cardName}</strong>
+              </p>
+              <p>{new Date(card.createdAt).toLocaleDateString()}</p>
+              <p>{card.owner?.username || "Unknown"}</p>
+              <p>{card.cardDESC}</p>
             </div>
           </div>
         ))}

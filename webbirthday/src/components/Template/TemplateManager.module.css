@@ -1,0 +1,9 @@
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding-left: 20px;
+    /* nếu muốn cách ra so với sidebar */
+    box-sizing: border-box;
+}

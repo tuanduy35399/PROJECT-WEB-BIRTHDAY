@@ -2,7 +2,10 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-
+// Import routes
+import cardRoutes from "./routes/cardRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import templateRoutes from "./routes/templateRoutes.js"
 dotenv.config();
 
 const app = express();
@@ -20,17 +23,14 @@ mongoose
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-//Routes test
-app.get("/", (req, res) => {
-  res.send("Backend is running 🚀");
-});
+  app.get("/", (req, res) => {
+    res.send("Backend is running 🚀");
+  });
 
-// Import routes
-import cardRoutes from "./routes/cardRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-
+//Routes
 app.use("/api/cards", cardRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/templates", templateRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>

@@ -1,46 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styles from "./AdminBottomSection.module.css";
 import UserDetailDrawer from "../UserDetailDrawer/UserDetailDrawer";
 
 const AdminBottomSection = () => {
-  const [accounts, setAccounts] = useState([
-    {
-      id: 1,
-      username: "user01",
-      lastAccess: "2025-09-01",
-      status: true,
-      createdAt: "2025-01-01",
-      createdBy: "Admin A",
-      cards: ["Card A1", "Card A2"],
-    },
-    {
-      id: 2,
-      username: "user02",
-      lastAccess: "2025-09-10",
-      status: false,
-      createdAt: "2025-02-15",
-      createdBy: "Admin B",
-      cards: ["Card B1"],
-    },
-    {
-      id: 3,
-      username: "user03",
-      lastAccess: "2025-09-12",
-      status: true,
-      createdAt: "2025-03-20",
-      createdBy: "Admin A",
-      cards: ["Card C1", "Card C2", "Card C3"],
-    },
-  ]);
-
+  const [accounts, setAccounts] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const toggleStatus = (id) => {
-    setAccounts(
-      accounts.map((acc) =>
-        acc.id === id ? { ...acc, status: !acc.status } : acc
-      )
-    );
+  // Lấy danh sách user từ DB
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/users");
+        setAccounts(res.data);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  // Toggle trạng thái hoạt động (isActive)
+  const toggleStatus = async (id, currentStatus) => {
+    try {
+      const res = await axios.put(`http://localhost:5000/api/users/${id}`, {
+        isActive: !currentStatus,
+      });
+
+      setAccounts(
+        accounts.map((acc) =>
+          acc._id === id ? { ...acc, isActive: res.data.user.isActive } : acc
+        )
+      );
+    } catch (err) {
+      console.error("Error updating status:", err);
+    }
   };
 
   return (
@@ -55,14 +49,14 @@ const AdminBottomSection = () => {
         </thead>
         <tbody>
           {accounts.map((acc) => (
-            <tr key={acc.id} onDoubleClick={() => setSelectedUser(acc)}>
+            <tr key={acc._id} onDoubleClick={() => setSelectedUser(acc)}>
               <td>{acc.username}</td>
-              <td>{acc.lastAccess}</td>
+              <td>{acc.lastAccess || "N/A"}</td>
               <td>
                 <input
                   type="checkbox"
-                  checked={acc.status}
-                  onChange={() => toggleStatus(acc.id)}
+                  checked={acc.isActive ?? true}
+                  onChange={() => toggleStatus(acc._id, acc.isActive)}
                 />
               </td>
             </tr>
@@ -70,7 +64,6 @@ const AdminBottomSection = () => {
         </tbody>
       </table>
 
-      {/* Drawer hiển thị khi chọn user */}
       <UserDetailDrawer
         user={selectedUser}
         onClose={() => setSelectedUser(null)}
