@@ -1,16 +1,22 @@
 .mainContent {
+    /* display: flex;
+    flex-direction: column; */
+    height: 100vh;
+    width: 110%;
+    padding-left: 20px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    /* quan trọng để % hoạt động */
+    align-items: start;
+    justify-content: start;
+    /* margin-top: 10px; */
+    margin-left: -10px;
+    padding-top: 20px;
+    /* max-height: 100%;
+    max-width: 29vw; */
+    gap: 30px;
+    background-image: url("src/assets/bgtemplate.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-.topSection {
-    flex: 0 0 25%;
-    /* chiếm 25% chiều cao */
-}
-
-.bottomSection {
-    flex: 1;
-    /* chiếm phần còn lại ~75% */
-}

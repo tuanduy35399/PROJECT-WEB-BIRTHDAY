@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./TemplateTopSection.module.css";
-import bg from "../../../assets/createbg2.jpg";
+// import bg from "../../../assets/createbg2.jpg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -26,7 +26,8 @@ const TemplateTopSection = () => {
   return (
     <div className={styles.TemplateTopSection}>
       <div className={styles.containWrapper}>
-        <div>
+        {/* className={styles.imgContainer} */}
+        <div > 
           <h1 className={styles.title}>TEMPLATES</h1>
           <button
             className={styles.pillBtn}
@@ -35,9 +36,9 @@ const TemplateTopSection = () => {
             + NEW
           </button>
         </div>
-        <div className={styles.imgContainer}>
+        {/* <div >
           <img src={bg} alt="Top Illustration" />
-        </div>
+        </div> */}
       </div>
 
       {/* Drawer */}
