@@ -1,0 +1,1 @@
+Thường để logic gọi API, xử lý logic đằng sau mà không trực tiếp gọi và xử lý trên giao diện

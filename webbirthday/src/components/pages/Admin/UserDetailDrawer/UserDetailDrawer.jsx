@@ -19,7 +19,7 @@ const UserDetailDrawer = ({ user, onClose }) => {
         <p><strong>Created By:</strong> {user.createdBy}</p>
         <h3>Owned Cards</h3>
         <ul>
-          {user.cards.map((card, i) => (
+          {user.cards?.map((card, i) => (
             <li key={i}>{card}</li>
           ))}
         </ul>
