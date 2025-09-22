@@ -8,7 +8,7 @@ const LayerContext = createContext();
 export default function LayerPanel(){
     const temp_layers = ["Layer 1", "Layer 2", "Layer 3", "Layer 4", "Layer 5"];
     const [cardName, setCardName] = useState("Tên thiệp"); //Ten thiep tam thoi
-    const [validName, setValidName] = useState(true);
+    const [validName, setValidName] = useState(true); //Kiểm tra tên FIle có hợp lệ không
     const [layerNum, setLayerNum] = useState(0);
     const [layerSelected, setlayerSelected] = useState("");
     const handleChangeName =(e)=>{
@@ -37,7 +37,7 @@ export default function LayerPanel(){
                 <div className="relative mx-auto w-[80%] h-[50%]">
                     <input 
                     onChange={(e)=>{handleChangeName(e)}}
-                    type="text" value ={cardName} className="border-0 hover:border-0 w-full border-[#cde1f7] rounded-[4px] mx-auto text-[1.5rem]"></input>
+                    type="text" value ={cardName} className="border-0 hover:border-0 w-full border-[#cde1f7] rounded-[4px] mx-auto text-[1.5rem] bg-transparent"></input>
                 </div>
             </div>
 
