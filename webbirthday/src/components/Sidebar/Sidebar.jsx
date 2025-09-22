@@ -8,7 +8,7 @@ import { BiCategory } from "react-icons/bi";
 import styles from "./Sidebar.module.css";
 import { useState } from "react";
 const Sidebar = ({ open, setOpen }) => {
-  const [isActive, setActive] = useState("/home")
+  const [isActive, setActive] = useState("/users")
   return (
     <div className={`${styles.sidebar} ${open ? styles.sidebarOpen : styles.sidebarCollapsed}`}>
       {/* Toggle */}
@@ -25,7 +25,7 @@ const Sidebar = ({ open, setOpen }) => {
       <ul className={styles.menuList}>
   <li>
     <NavLink
-      to="/home"
+      to="/users"
       className={({ isActive }) =>
         `${styles.menuItem} ${isActive ? styles.activeLink : ""}`
       }

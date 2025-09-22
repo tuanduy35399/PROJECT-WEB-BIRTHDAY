@@ -43,7 +43,7 @@ function MainApp() {
             
             >
 
-                <Route path="/home" element={<Admin />} />
+                <Route path="/users" element={<Admin />} />
                 <Route path="/cards" element={<CardManager />} />
                 <Route path="/templates" element={<TemplateManager />} /> 
 
