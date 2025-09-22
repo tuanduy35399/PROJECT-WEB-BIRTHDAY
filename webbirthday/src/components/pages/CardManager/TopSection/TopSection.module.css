@@ -2,13 +2,18 @@
     height: 25%;
     /* background-color: #ecf0f1; */
     /* padding-left: 20px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     box-sizing: border-box;
 }
 
 .containWrapper {
     /* margin-left: 20px; */
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
     display: flex;
 }
 

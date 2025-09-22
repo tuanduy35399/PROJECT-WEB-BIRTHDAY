@@ -14,7 +14,7 @@ const AdminTopSection = () => {
           className={styles.pillBtn}
           onClick={() => setShowModalCreateUser(true)}
         >
-          New User
+        + New User
         </button>
       </div>
 

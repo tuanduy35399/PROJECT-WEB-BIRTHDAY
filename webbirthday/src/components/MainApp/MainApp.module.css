@@ -4,12 +4,12 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    margin-left: 70px;
+    margin-left: 57px;
     /* khi sidebar collapsed */
     transition: margin-left 0.3s ease;
 }
 
 .mainShifted {
-    margin-left: 230px;
+    margin-left: 210px;
     /* khi sidebar mở */
 }

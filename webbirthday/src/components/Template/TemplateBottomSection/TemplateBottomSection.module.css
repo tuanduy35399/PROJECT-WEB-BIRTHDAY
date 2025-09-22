@@ -1,8 +1,10 @@
 .bottomSection {
     flex: 1;
-    max-height: 550px;
+    max-height: 560px;
+    width: 100%;
     /* background-color: #bdc3c7; */
-    /* padding: 30px; */
+    /* padding-top: 10px; */
+    padding-bottom: 30px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -24,8 +26,10 @@
     justify-content: space-between;
     gap: 20px;
     overflow-y: auto;
+    width: 100%;
     /* chỉ scroll trong khung này */
-    padding-right: 10px;
+    padding: 10px;
+    
     margin-left: 20px;
 }
 

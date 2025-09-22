@@ -9,7 +9,7 @@ const LayerContext = createContext();
 export function HomeButton(){
     const navigate = useNavigate();
     return (
-        <HomeIcon className="w-[32px] h-[32px]" onClick={()=>{navigate("/home")}}></HomeIcon> 
+        <HomeIcon className="w-[32px] h-[32px]" onClick={()=>{navigate("/users")}}></HomeIcon> 
     );
 }
 

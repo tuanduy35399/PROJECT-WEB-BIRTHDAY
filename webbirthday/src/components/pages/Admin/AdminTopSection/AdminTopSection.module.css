@@ -10,16 +10,45 @@
 
 .adminTitle {
     font-size: 40px;
-    margin-left: 20px;
+    /* margin-left: 20px; */
     color: deepskyblue;
 }
 
+.pillBtn {
+    background-color: lightskyblue;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 60px;
+    font-size: 15px;
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.pillBtn:hover {
+    background-color: deepskyblue;
+    transform: scale(1.05);
+}
+
+.pillBtn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(135, 206, 250, 0.5);
+}
 /* Nhóm nút và search */
 .topActions {
     display: flex;
     align-items: center;
     gap: 15px;
 }
+
+/* .leftSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+} */
 
 /* Search bar viên thuốc */
 .searchBar {
