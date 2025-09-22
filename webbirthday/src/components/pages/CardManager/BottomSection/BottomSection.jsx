@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import styles from "./BottomSection.module.css";
+import { getCards } from "../../../../services/cardService";
 
 const BottomSection = () => {
   const [cardsData, setCardsData] = useState([]);
@@ -8,7 +8,7 @@ const BottomSection = () => {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/cards");
+        const res = await getCards();
         setCardsData(res.data);
       } catch (err) {
         console.error("Error fetching cards:", err);

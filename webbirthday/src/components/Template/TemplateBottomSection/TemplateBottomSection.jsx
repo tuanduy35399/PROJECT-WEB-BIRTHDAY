@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import styles from "./TemplateBottomSection.module.css";
+import { getTemplates } from "../../../services/templateService";
 
 const TemplateBottomSection = () => {
   const [templates, setTemplates] = useState([]);
 
   useEffect(() => {
-    const fetchTemplates = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/templates");
-        setTemplates(res.data);
-      } catch (err) {
-        console.error("Error fetching templates:", err);
-      }
-    };
-
-    fetchTemplates();
+    getTemplates()
+      .then((res) => setTemplates(res.data))
+      .catch((err) => console.error("Error fetching templates:", err));
   }, []);
 
   return (

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import styles from "./AdminBottomSection.module.css";
 import UserDetailDrawer from "../UserDetailDrawer/UserDetailDrawer";
+import { getUsers, updateUserStatus } from "../../../../services/userService";
 
 const AdminBottomSection = () => {
   const [accounts, setAccounts] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // Lấy danh sách user từ DB
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/users");
-        setAccounts(res.data);
+        const data = await getUsers();
+        setAccounts(data);
       } catch (err) {
         console.error("Error fetching users:", err);
       }
@@ -20,16 +19,12 @@ const AdminBottomSection = () => {
     fetchUsers();
   }, []);
 
-  // Toggle trạng thái hoạt động (isActive)
   const toggleStatus = async (id, currentStatus) => {
     try {
-      const res = await axios.put(`http://localhost:5000/api/users/${id}`, {
-        isActive: !currentStatus,
-      });
-
-      setAccounts(
-        accounts.map((acc) =>
-          acc._id === id ? { ...acc, isActive: res.data.user.isActive } : acc
+      const updatedUser = await updateUserStatus(id, !currentStatus);
+      setAccounts((prev) =>
+        prev.map((acc) =>
+          acc._id === id ? { ...acc, isActive: updatedUser.isActive } : acc
         )
       );
     } catch (err) {

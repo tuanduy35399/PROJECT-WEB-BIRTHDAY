@@ -7,29 +7,44 @@ const UserController = {
   // [POST] /api/users/createUser
   createUser: async (req, res) => {
     try {
-      const { username, password, userID } = req.body;
+      const { username, password, role } = req.body;
 
+      // Kiểm tra username đã tồn tại
       const existingUser = await User.findOne({ username });
       if (existingUser) {
         return res.status(400).json({ message: "Username already exists" });
       }
 
-      // hash password
+      // Hash password
       const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Generate unique 4-digit userID
+      let userID;
+      let isUnique = false;
+      while (!isUnique) {
+        userID = Math.floor(1000 + Math.random() * 9000).toString(); // 4 chữ số
+        const existingID = await User.findOne({ userID });
+        if (!existingID) isUnique = true;
+      }
 
       const newUser = new User({
         username,
         password: hashedPassword,
         userID,
+        isAdmin: role === "ADMIN", // xác định admin hay không
+        isActive: true, // mặc định true
       });
 
       await newUser.save();
+
       res.status(201).json({
         message: "User created successfully",
         user: {
           id: newUser._id,
           username: newUser.username,
           userID: newUser.userID,
+          isAdmin: newUser.isAdmin,
+          isActive: newUser.isActive,
         },
       });
     } catch (err) {
