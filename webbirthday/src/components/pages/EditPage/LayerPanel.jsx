@@ -1,15 +1,16 @@
+import './EditPage.css'
 import {useState, useContext, createContext, useEffect} from "react";
 import {BsLayoutSidebarInset as CloseLayerIcon} from "react-icons/bs";
 import {FaHome as HomeIcon} from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const LayerContext = createContext();
 
 
-export function HomeButton(){
+export function HomeButton() {
     const navigate = useNavigate();
     return (
-        <HomeIcon className="w-[32px] h-[32px]" onClick={()=>{navigate("/users")}}></HomeIcon> 
+        <HomeIcon className="w-[32px] h-[32px]" onClick={()=>{navigate("/home")}}></HomeIcon> 
     );
 }
 
@@ -86,7 +87,7 @@ export default function LayerPanel() {
             <div className="w-[85%] h-[1%] relative mx-auto">
                 <hr className="absolute border-[#e6e6e6] w-full"/>
             </div>
-            <div className="flex flex-row justify-between">
+            <div className="mt-2 flex flex-row justify-between">
                 <p className="font-bold ml-[1rem]">Layers</p>
                 <p className="mr-[1rem]">({layerNum})</p>
             </div>
