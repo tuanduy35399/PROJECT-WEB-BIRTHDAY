@@ -39,7 +39,7 @@ export default function Login({onLogin}) {
         } 
     }
 
-    const emailInvalid = submit && inputEmail !== "" && !inputEmail.includes("@");
+    const emailInvalid = submit && inputEmail !== "";
     const passwordInvalid = submit && inputPassword !== "" && inputPassword.trim().length < 6
 
     return (
@@ -60,7 +60,7 @@ export default function Login({onLogin}) {
                     />
                     {emailInvalid && (
                         <p style={{ color: "red", margin: "0px" }}>
-                            Username phải chứa ký tự @
+                            Username là bắt buộc
                         </p>
                     )}
 
