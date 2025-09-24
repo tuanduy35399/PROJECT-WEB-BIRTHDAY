@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from "../utils/axiosCustomize.js";
 
-const API_URL = "http://localhost:5000/api/cards";
+const API_URL = "api/cards";
 
 export const getCards = () => {
   return axios.get(API_URL);

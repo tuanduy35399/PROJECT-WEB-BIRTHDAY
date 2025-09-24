@@ -1,7 +1,6 @@
-import axios from "axios";
+import axios from "../utils/axiosCustomize.js";
 
-
-const API_URL = "http://localhost:5000/api/users";
+const API_URL = "api/users";
 
 export const getUsers = async () => {
   const res = await axios.get(API_URL);

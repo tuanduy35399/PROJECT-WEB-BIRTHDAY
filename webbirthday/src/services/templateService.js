@@ -1,5 +1,5 @@
-import axios from "axios";
+import axios from "../utils/axiosCustomize.js";
 
-const API_URL = "http://localhost:5000/api/templates";
+const API_URL = "api/templates";
 
 export const getTemplates = () => axios.get(API_URL);
