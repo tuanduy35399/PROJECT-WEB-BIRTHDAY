@@ -7,4 +7,12 @@
     .panelButton{
     @apply w-[32px] h-[32px];
     }
+
+    .toolButton{
+        @apply flex p-2 w-[48px] h-[48px] bg-[#ecf0f1] rounded-xl justify-center items-center hover:bg-[#f8fafd] cursor-pointer;
+    }
+
+    .toolButtonSelected{
+        @apply flex p-2 w-[48px] h-[48px] bg-[#f8fafd] rounded-xl justify-center items-center cursor-pointer shadow-black shadow-sm;
+    }
 }
