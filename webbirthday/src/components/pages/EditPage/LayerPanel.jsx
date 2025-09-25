@@ -3,18 +3,18 @@ import {useState, useContext, createContext, useEffect} from "react";
 import {BsLayoutSidebarInset as CloseLayerIcon} from "react-icons/bs";
 import {FaHome as HomeIcon} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
+import { PanelContext } from './EditPage';
 
-const LayerContext = createContext();
-
-
+    const LayerContext = createContext();
 export function HomeButton() {
     const navigate = useNavigate();
     return (
-        <HomeIcon className="w-[32px] h-[32px]" onClick={()=>{navigate("/users")}}></HomeIcon> 
+        <HomeIcon className="panelButton" onClick={()=>{navigate("/users")}}></HomeIcon> 
     );
 }
 
 export default function LayerPanel() {
+
     const temp_layers = [
         "Layer 1",
         "Layer 2",
@@ -26,7 +26,7 @@ export default function LayerPanel() {
     const [validName, setValidName] = useState(true); // Kiểm tra tên FIle có hợp lệ không
     const [layerNum, setLayerNum] = useState(0);
     const [layerSelected, setlayerSelected] = useState("");
-    const [closeLayer, setCloseLayer] = useState(false);
+    const {closePanels, setClosePanels} = useContext(PanelContext);
 
     const handleChangeName = (e) => {
         const value = e.target.value;
@@ -49,28 +49,28 @@ export default function LayerPanel() {
         <div id="layer-container"
             className={
                 `relative ${
-                    (!closeLayer) ? "w-[15%]" : "w-[64px]"
+                    (!closePanels) ? "w-full" : "w-[64px]"
                 } h-screen bg-[#f8fafd] shadow-md shadow-black transition-all duration-700 ease-in-out`
         }>
             <div id="layer-navigate" className="w-full h-[4rem]">
                 <div className="flex flex-row w-[100%] h-[50%] ml-4">
                     {
-                    (!closeLayer) ? <HomeButton></HomeButton> : <></>
+                    (!closePanels) ? <HomeButton></HomeButton> : <></>
                 }
 
                     <CloseLayerIcon className={
                             `absolute w-[32px] h-[32px] right-6 ${
-                                (!closeLayer) ? "" : "transform translate-x-2"
+                                (!closePanels) ? "" : "transform translate-x-2"
                             } transition-all duration-700 ease-in-out`
                         }
                         onClick={
                             () => {
-                                setCloseLayer((prev) => !prev)
+                                setClosePanels((prev) => !prev)
                             }
                     }></CloseLayerIcon>
             </div>
             {
-            (!closeLayer) ? <div className="mt-2 relative mx-auto w-[80%] h-[50%]">
+            (!closePanels) ? <div className="mt-2 relative mx-auto w-[80%] h-[50%]">
                 <input onChange={
                         (e) => {
                             handleChangeName(e)
@@ -83,7 +83,7 @@ export default function LayerPanel() {
         </div> : <></>
         } </div>
         {
-        (!closeLayer) ? <>
+        (!closePanels) ? <>
             <div className="w-[85%] h-[1%] relative mx-auto">
                 <hr className="absolute border-[#e6e6e6] w-full"/>
             </div>
