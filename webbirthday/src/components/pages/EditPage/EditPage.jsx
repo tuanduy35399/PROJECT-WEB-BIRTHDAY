@@ -9,13 +9,14 @@ export const PanelContext = createContext();
 
 export default function EditPage(){
     const [closePanels, setClosePanels] = useState(false);
+    const [layerSelected, setLayerSelected] = useState("");
 
 
 
 
     return (    
         <div className="h-screen w-screen flex flex-row justify-between">
-            <PanelContext.Provider value={{closePanels,setClosePanels}}>
+            <PanelContext.Provider value={{closePanels,setClosePanels,layerSelected, setLayerSelected}}>
             <div id="layerPanel" className="h-full w-[15%]">
                 <LayerPanel></LayerPanel>
             </div>

@@ -23,15 +23,27 @@ function SaveButton(){
 
 export default function PropertiesPanel(){
     const {closePanels,setClosePanels} = useContext(PanelContext);
+    const {layerSelected, setLayerSelected} = useContext(PanelContext);
 
 
     return (
-        <div id="propertiesContainer" className="relative h-full w-full bg-[#f8fafd] shadow-black shadow-md">
-            <div id="propertiesNavigates" className="absolute right-4 bottom-0 w-auto h-[4rem] flex flex-row gap-x-8">
-                   <SaveButton></SaveButton>
-                    <ExportButton></ExportButton>
+    <div className="relative h-full w-full">
+        <div id="propertiesContainer" className={`absolute right-0 h-full ${(!closePanels)?"w-full":"w-0"} bg-[#f8fafd] shadow-black shadow-md transition-all ease-in-out duration-700`}>
+            {(!closePanels)&&
+                <div id="propertiesNavigates" className="absolute right-4 bottom-0 w-auto h-[4rem] flex flex-row gap-x-8">
+                    <SaveButton></SaveButton>
+                        <ExportButton></ExportButton>
+                </div>
+            }
+            <div>
+                <p>Hiện chưa có gì</p>
+                <p>Đang chọn layer: {layerSelected}</p>
+                
             </div>
-        </div>
+        </div>    
+    </div>
+
+    
 
 
 

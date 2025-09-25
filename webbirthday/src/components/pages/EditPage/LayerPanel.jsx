@@ -5,7 +5,6 @@ import {FaHome as HomeIcon} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
 import { PanelContext } from './EditPage';
 
-    const LayerContext = createContext();
 export function HomeButton() {
     const navigate = useNavigate();
     return (
@@ -25,7 +24,6 @@ export default function LayerPanel() {
     const [cardName, setCardName] = useState("Tên thiệp"); // Ten thiep tam thoi
     const [validName, setValidName] = useState(true); // Kiểm tra tên FIle có hợp lệ không
     const [layerNum, setLayerNum] = useState(0);
-    const [layerSelected, setlayerSelected] = useState("");
     const {closePanels, setClosePanels} = useContext(PanelContext);
 
     const handleChangeName = (e) => {
@@ -60,7 +58,7 @@ export default function LayerPanel() {
 
                     <CloseLayerIcon className={
                             `absolute w-[32px] h-[32px] right-6 ${
-                                (!closePanels) ? "" : "transform translate-x-2"
+                                (!closePanels) ? "" : "transform translate-x-2 rotate-180"
                             } transition-all duration-700 ease-in-out`
                         }
                         onClick={
@@ -93,9 +91,6 @@ export default function LayerPanel() {
             </div>
 
             <div id="id_list_container" className="w-full h-[80%]">
-                <LayerContext.Provider value={
-                    {layerSelected, setlayerSelected}
-                }>
                     <div id="id_list" className="ml-[1.5rem]">
                         {
                         temp_layers.map((layer, index) => {
@@ -109,7 +104,6 @@ export default function LayerPanel() {
                         })
                     } </div>
 
-                </LayerContext.Provider>
 
             </div>
         </> : <></>
@@ -125,7 +119,7 @@ export function Layer({
     id
 }) {
     const [layerName, setLayerName] = useState(layerGivenName);
-    const {layerSelected, setlayerSelected} = useContext(LayerContext);
+    const {layerSelected, setLayerSelected} = useContext(PanelContext);
     const handleChangeLayerName = (e) => {
         const value = e.target.value;
         const regex = /^[a-zA-Z0-9À-ỹ\s]{0,32}$/;
@@ -137,7 +131,7 @@ export function Layer({
         <div> {
             (layerSelected != id) ? <div onClick={
                     () => {
-                        setlayerSelected(id)
+                        setLayerSelected(id)
                     }
                 }
                 className="flex w-[90%] h-[1.5rem] items-center rounded-[4px] px-[0.5rem] hover:bg-[#cde1f7] transition-colors duration-600">
