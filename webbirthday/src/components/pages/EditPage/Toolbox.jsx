@@ -13,10 +13,10 @@ export default function Toolbox(){
     
     
     return (
-        <div id="toolboxContainer" className="w-full h-full  shadow-black shadow-md bg-[#87cefa] rounded-xl grid grid-cols-4 justify-items-center items-center">
+        <div id="toolboxContainer" className="w-full h-full  shadow-black shadow-md bg-[#cde1f7] rounded-xl grid grid-cols-4 justify-items-center items-center">
             {toolsList.slice(0,toolNum).map((Tool, index)=>{
                 
-                return  <Tool key="index"></Tool>
+                return  <Tool key={index}></Tool>
             })}
         </div>
 
@@ -29,12 +29,18 @@ export default function Toolbox(){
 
 function BrushTool(){
     const {toolSelected, setToolSelected} = useContext(PanelContext);
+    function handleBrush(){
+
+        setToolSelected("brush")
+
+
+    }
 
     return (
         (toolSelected!="brush")?
         <div 
             className="toolButton"
-            onClick={()=>{setToolSelected("brush")}} 
+            onClick={()=>{handleBrush()}} 
         >
 
             <BrushIcon size={32}></BrushIcon>

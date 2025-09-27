@@ -27,7 +27,7 @@ export default function PropertiesPanel(){
 
 
     return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full pointer">
         <div id="propertiesContainer" className={`absolute right-0 h-full ${(!closePanels)?"w-full":"w-0"} bg-[#f8fafd] shadow-black shadow-md transition-all ease-in-out duration-700`}>
             {(!closePanels)&&
                 <div id="propertiesNavigates" className="absolute right-4 bottom-0 w-auto h-[4rem] flex flex-row gap-x-8">
