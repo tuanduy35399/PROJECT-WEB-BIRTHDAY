@@ -15,6 +15,12 @@ export default function EditPage(){
     const [toolSelected, setToolSelected] = useState("chưa chọn");
     const [toolNum, setToolNum] = useState(4);
     const [drawingMode, setDrawingMode] = useState(false);
+    const [drawBrush, setDrawBrush] = useState(
+        {
+                color: "blue",
+                width: 15,
+            }
+        );
     function getSizeToolBox(toolsNum){
         return `w-[${toolsNum*64}px]`
     }
@@ -24,7 +30,7 @@ export default function EditPage(){
 
     return (
         <div className="relative h-screen w-screen">
-             <PanelContext.Provider value={{closePanels,setClosePanels,layerSelected, setLayerSelected, toolSelected, setToolSelected, toolNum, setToolNum, drawingMode, setDrawingMode}}>
+             <PanelContext.Provider value={{drawBrush, setDrawBrush, closePanels,setClosePanels,layerSelected, setLayerSelected, toolSelected, setToolSelected, toolNum, setToolNum, drawingMode, setDrawingMode}}>
             <div id="canvasWorkSpace" className="absolute h-screen w-screen">
                 <WorkSpace></WorkSpace>
             </div>

@@ -3,6 +3,7 @@ import { useState, useContext } from 'react';
 import { PanelContext } from './EditPage';
 import { FaSave as SaveIcon } from "react-icons/fa";
 import { FaFileExport as ExportIcon } from "react-icons/fa6";
+import { ChromePicker } from 'react-color';
 
 
 function ExportButton(){
@@ -24,6 +25,10 @@ function SaveButton(){
 export default function PropertiesPanel(){
     const {closePanels,setClosePanels} = useContext(PanelContext);
     const {layerSelected, setLayerSelected} = useContext(PanelContext);
+    const {toolSelected, setToolSelected} = useContext(PanelContext);
+    const {drawBrush, setDrawBrush} = useContext(PanelContext);
+    const [brushSize, setBrushSize] = useState(15);
+    const [brushColor, setBrushColor] = useState("blue");
 
 
     return (
@@ -35,9 +40,26 @@ export default function PropertiesPanel(){
                         <ExportButton></ExportButton>
                 </div>
             }
-            <div>
-                <p>Hiện chưa có gì</p>
+            <div className="mx-4">
                 <p>Đang chọn layer: {layerSelected}</p>
+                <p>Tool đang chọn: {toolSelected}</p>
+                {(toolSelected=="brush")&&
+                <div className="flex flex-col gap-y-2"> 
+                    {JSON.stringify(drawBrush)}
+                    <p>Nhập vào size Brush:</p>
+                    <input type="number" value={brushSize} onChange={(e)=>{setBrushSize(e.target.value)}}/>
+                    <p>Đổi màu cọ:</p>
+                    <ChromePicker className="mx-auto" color={brushColor} onChange={(updcolor)=>{setBrushColor(updcolor.hex)}}></ChromePicker>
+                    <div className="flex items-center justify-center"> 
+                        <div className="w-[64px] h-[48px] bg-amber-300 flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black" onClick={()=>{
+                        setDrawBrush({color:brushColor, width:brushSize});
+
+                        }}>Đổi cọ</div>
+                    </div>
+                    
+
+                </div>}
+
                 
             </div>
         </div>    

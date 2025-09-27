@@ -7,6 +7,7 @@ export default function WorkSpace(){
     const canvasRef = useRef(null);
     const fabricRef = useRef(null);
     const {toolSelected, setToolSelected} = useContext(PanelContext);
+    const {drawBrush, setDrawBrush} = useContext(PanelContext);
 
     useEffect(()=>{
         if(!canvasRef.current){return;};
@@ -41,11 +42,12 @@ export default function WorkSpace(){
         const canvas = fabricRef.current;
         canvas.isDrawingMode = (toolSelected=="brush")?true:false;
         if (canvas.isDrawingMode) {
-            canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-            canvas.freeDrawingBrush.color = "red";
-            canvas.freeDrawingBrush.width = 10;
-        }
-    },[toolSelected])
+            console.log(drawBrush);
+            const brush = new fabric.PencilBrush(canvas);
+            Object.assign(brush, drawBrush);
+            canvas.freeDrawingBrush = brush;
+            }
+    },[toolSelected,drawBrush])
 
 
     return (
