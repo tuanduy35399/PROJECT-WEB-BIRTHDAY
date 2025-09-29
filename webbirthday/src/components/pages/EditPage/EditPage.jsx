@@ -13,7 +13,7 @@ export default function EditPage(){
     const [closePanels, setClosePanels] = useState(false);
     const [layerSelected, setLayerSelected] = useState("chưa chọn");
     const [toolSelected, setToolSelected] = useState("chưa chọn");
-    const [toolNum, setToolNum] = useState(4);
+    const [toolNum, setToolNum] = useState(5);
     const [drawingMode, setDrawingMode] = useState(false);
     const [drawBrush, setDrawBrush] = useState(
         {
@@ -40,7 +40,7 @@ export default function EditPage(){
                         <LayerPanel></LayerPanel>
                     </div>
 
-                    <div id="toolBox" className={`fixed  left-1/2 -translate-x-1/2 bottom-4 h-[64px] ${getSizeToolBox(4)}`}>
+                    <div id="toolBox" className={`fixed  left-1/2 -translate-x-1/2 bottom-4 h-[64px] ${getSizeToolBox(toolNum)}`}>
                         <Toolbox></Toolbox>
                     </div>
 
