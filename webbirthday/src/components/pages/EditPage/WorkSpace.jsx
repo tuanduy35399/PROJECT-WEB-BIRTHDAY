@@ -1,64 +1,62 @@
 import {useEffect, useState, useRef, useContext} from 'react';
-import { fabric } from "fabric/dist/fabric";
+import { fabric } from "fabric";
+
 
 import { PanelContext } from './EditPage';
 
 
-export default function WorkSpace(){
-
+export default function WorkSpace({ fabricData }){
     const canvasRef = useRef(null);
-    const fabricRef = useRef(null);
+    const {fabricRef} = useContext(PanelContext);
     const {toolSelected, setToolSelected} = useContext(PanelContext);
     const {drawBrush, setDrawBrush} = useContext(PanelContext);
     const {eraserBrush, setEraserBrush} = useContext(PanelContext);
     const {eraserType,setEraserType} = useContext(PanelContext);
 
-    useEffect(()=>{
-        if(!canvasRef.current){return;};
 
-        const canvas = new fabric.Canvas(canvasRef.current, {
+    
+    useEffect(() => {
+            if (!canvasRef.current) return;
+
+            const canvas = new fabric.Canvas(canvasRef.current, {
             width: window.innerWidth,
             height: window.innerHeight,
             backgroundColor: "lightyellow",
-        });
-        fabricRef.current=canvas;
+            });
+            fabricRef.current = canvas;
 
+            // load lại canvas từ fabricData nếu có
+            if (fabricData) {
+            try {
+                const json = JSON.parse(fabricData);
+                canvas.loadFromJSON(json, () => {
+                canvas.renderAll();
+                });
+            } catch (err) {
+                console.error("Error parsing fabric data:", err);
+            }
+            }
 
-        const rect = new fabric.Rect({
-            left:100,
-            top:100,
-            fill:"red",
-            width:100,
-            height:100,
-        });
-
-        canvas.add(rect);
-        
-
-        return () =>{
+            return () => {
             canvas.dispose();
-            fabricRef.current=null;
-        }
-    },[]);
+            fabricRef.current = null;
+            };
+        }, [fabricData]);
 
     useEffect(()=>{
         if(!fabricRef.current){return;};
         const canvas = fabricRef.current;
-        canvas.on("mouse:down", (opt)=>{
-            //event click: const evt = opt.e;      
-            //vitri click: const pointer = canvas.getPointer(evt);
-            if(toolSelected=="eraser"&&eraserType=="xoaobject"){
+
+        function handleMouseDown(opt){
+            if(toolSelected=="eraser"){
                 if(opt.target){
                     canvas.remove(opt.target);
                     canvas.requestRenderAll();
                 }
             }
-        
-        });
-
-        canvas.on("mouse:up",(opt)=>{
-            
-            if(toolSelected=="eraser"&&eraserType=="xoaobject" ){
+        };
+        function handleMouseUp(opt){
+             if(toolSelected=="eraser"){
                 const activeObjects = canvas.getActiveObjects();
                      
                 if (activeObjects.length) {
@@ -68,20 +66,24 @@ export default function WorkSpace(){
                 }
             }
             
+        }
+        canvas.on("mouse:down", handleMouseDown);
 
-        });
+        canvas.on("mouse:up", handleMouseUp);
 
-        canvas.isDrawingMode = (toolSelected=="brush" || (toolSelected=="eraser"&&eraserType=="macdinh"))?true:false;
+        canvas.isDrawingMode = (toolSelected=="brush")?true:false;
         if (canvas.isDrawingMode && toolSelected=="brush") {
             const brush = new fabric.PencilBrush(canvas);
             Object.assign(brush, drawBrush);
             canvas.freeDrawingBrush = brush;
             }
-        if (canvas.isDrawingMode && toolSelected=="eraser"){{
-            const brush = new fabric.EraserBrush(canvas);
-            Object.assign(brush, eraserBrush);
-            canvas.freeDrawingBrush = brush;
-        }}
+
+
+        return ()=>{
+            canvas.off("mouse:down", handleMouseDown);
+            canvas.off("mouse:up", handleMouseUp);
+        }
+
     },[toolSelected, drawBrush, eraserBrush, eraserType])
 
 

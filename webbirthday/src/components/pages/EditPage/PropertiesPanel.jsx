@@ -4,7 +4,8 @@ import { PanelContext } from './EditPage';
 import { FaSave as SaveIcon } from "react-icons/fa";
 import { FaFileExport as ExportIcon } from "react-icons/fa6";
 import { ChromePicker } from 'react-color';
-
+import { createTemplate } from "../../../services/templateService";
+import { BsCardList as CardIcon} from "react-icons/bs";
 
 function ExportButton(){
     return (
@@ -14,21 +15,68 @@ function ExportButton(){
     );
 }
 
-function SaveButton(){
-    return(
-    <div>
-        <SaveIcon className="panelButton"></SaveIcon>
-    </div>
+function CardButton(){
+
+
+    return (
+        <div>
+            <CardIcon className="panelButton"></CardIcon>
+        </div>
     );
 }
 
+
+
+function SaveButton(){
+    const { fabricRef } = useContext(PanelContext);
+
+  const handleSave = async () => {
+    if (!fabricRef.current) {
+        alert("Canvas chưa khởi tạo");
+        return;
+    }
+
+    const json = fabricRef.current.toJSON();
+    const fabricEdit = JSON.stringify(json);
+
+    const imgData = fabricRef.current.toDataURL({
+        format: "png",
+        multiplier: 0.5,
+    });
+
+    try {
+        const res = await createTemplate({
+        templateID: Date.now().toString(),
+        name: "My Template",
+        owner: null,
+        imgURL: [imgData],
+        fabricEdit,
+        });
+        console.log("Saved:", res.data);
+        alert("Template saved!");
+    } catch (err) {
+        if (err.response) {
+        console.error("Server error:", err.response.data);
+        } else {
+        console.error("Client error:", err.message);
+        }
+    }
+    };
+
+
+  return (
+    <div onClick={handleSave}>
+      <SaveIcon className="panelButton" />
+    </div>
+  );
+}
+
 export default function PropertiesPanel(){
+    const {toggleSaveCard, setToggleSaveCard} = useContext(PanelContext);
     const {closePanels,setClosePanels} = useContext(PanelContext);
     const {layerSelected, setLayerSelected} = useContext(PanelContext);
     const {toolSelected, setToolSelected} = useContext(PanelContext);
     const {drawBrush, setDrawBrush} = useContext(PanelContext);
-    const {eraserType,setEraserType} = useContext(PanelContext);
-    const {eraserBrush,setEraserBrush} = useContext(PanelContext);
     const [brushSize, setBrushSize] = useState(15);
     const [brushColor, setBrushColor] = useState("blue");
     const [eraserSize, setEraserSize] = useState(15);
@@ -40,8 +88,12 @@ export default function PropertiesPanel(){
         <div id="propertiesContainer" className={`absolute right-0 h-full ${(!closePanels)?"w-full":"w-0"} bg-[#f8fafd] shadow-black shadow-md transition-all ease-in-out duration-700`}>
             {(!closePanels)&&
                 <div id="propertiesNavigates" className="absolute right-4 bottom-0 w-auto h-[4rem] flex flex-row gap-x-8">
+                    <div onClick={()=>{setToggleSaveCard((prev)=>!prev)}}>
+                        <CardButton></CardButton>
+                    </div>
                     <SaveButton></SaveButton>
-                        <ExportButton></ExportButton>
+                    <ExportButton></ExportButton>
+                    
                 </div>
             }
             <div className="mx-4">
@@ -63,25 +115,7 @@ export default function PropertiesPanel(){
                     
 
                 </div>}
-                {(toolSelected=="eraser"&&
-                    <div className="flex flex-col">
-                        {JSON.stringify(eraserBrush) + ", " +eraserType}
-                        <p>Chọn loại eraser:</p>
-                        <select name="eraserTypeBox" onChange={(e)=>{setEraserType(e.target.value)}}>
-                            <option value="macdinh">Mặc định</option>
-                            <option value="xoaobject">Xóa object</option>
-                        </select>
-                       {(eraserType=="macdinh")&&
-                       <div className="flex flex-col items-center justify-center gap-2 my-2">
-                            <input className="w-full" type="number" value={eraserSize} onChange={(e)=>{setEraserSize((prev)=>{if(e.target.value>=0) return e.target.value; else return prev;})}}></input>
-                            <div className="w-[64px] h-[48px] bg-amber-300 flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black" 
-                                onClick={()=>{setEraserBrush({width:eraserSize})}}
-                            >Đổi tẩy</div>
 
-                        </div>}
-
-                    </div>
-                )}
 
                 
             </div>

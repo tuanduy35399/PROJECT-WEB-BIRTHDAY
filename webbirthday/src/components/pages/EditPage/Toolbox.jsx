@@ -5,11 +5,12 @@ import { IoText as TextIcon } from "react-icons/io5";
 import { useContext } from "react";
 import { PanelContext } from "./EditPage";
 import { FaEraser as EraserIcon} from "react-icons/fa";
+import { FaHandSparkles as HandIcon } from "react-icons/fa";
 
 
 export default function Toolbox(){
     const {toolNum, setToolNum} = useContext(PanelContext);
-    const toolsList = [BrushTool, EraserTool, RectTool, ImageTool, TextTool];
+    const toolsList = [HandTool, BrushTool, EraserTool, RectTool, ImageTool, TextTool];
     function getColsNum(num){
         return `grid-cols-${num}`;
     }
@@ -59,6 +60,29 @@ function BrushTool(){
         </div>
     );
 }
+
+
+function HandTool(){
+    const {toolSelected, setToolSelected} = useContext(PanelContext);
+
+    return (
+        (toolSelected!="hand")?
+        <div 
+            className="toolButton"
+            onClick={()=>{setToolSelected("hand")}} 
+        >
+
+            <HandIcon size={32}></HandIcon>
+
+        </div>
+        :
+        <div className="toolButtonSelected">
+
+            <HandIcon size={32}></HandIcon>
+        </div>
+    );
+}
+
 
 function ImageTool(){
     const {toolSelected, setToolSelected} = useContext(PanelContext);

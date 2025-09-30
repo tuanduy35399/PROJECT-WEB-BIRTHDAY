@@ -10,7 +10,6 @@ import styles from "./Sidebar.module.css";
 const menuItems = [
   { to: "/users", icon: <CgProfile color="black" />, label: "Cá nhân" },
   { to: "/cards", icon: <TbCards color="black" />, label: "Quản lý thiệp" },
-  { to: "/edit", icon: <MdEdit color="black" />, label: "Chỉnh sửa" },
   { to: "/templates", icon: <BiCategory color="black" />, label: "Quản lý Template" },
 ];
 
