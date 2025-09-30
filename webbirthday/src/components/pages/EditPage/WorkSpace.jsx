@@ -14,33 +14,33 @@ export default function WorkSpace({ fabricData }){
 
 
     
-    useEffect(()=>{
-        if(!canvasRef.current){return;};
+    useEffect(() => {
+            if (!canvasRef.current) return;
 
-        const canvas = new fabric.Canvas(canvasRef.current, {
+            const canvas = new fabric.Canvas(canvasRef.current, {
             width: window.innerWidth,
             height: window.innerHeight,
             backgroundColor: "lightyellow",
-        });
-        fabricRef.current=canvas;
+            });
+            fabricRef.current = canvas;
 
-        
-        const rect = new fabric.Rect({
-            left:100,
-            top:100,
-            fill:"red",
-            width:100,
-            height:100,
-        });
+            // load lại canvas từ fabricData nếu có
+            if (fabricData) {
+            try {
+                const json = JSON.parse(fabricData);
+                canvas.loadFromJSON(json, () => {
+                canvas.renderAll();
+                });
+            } catch (err) {
+                console.error("Error parsing fabric data:", err);
+            }
+            }
 
-        canvas.add(rect);
-        
-
-        return () =>{
+            return () => {
             canvas.dispose();
-            fabricRef.current=null;
-        }
-    },[]);
+            fabricRef.current = null;
+            };
+        }, [fabricData]);
 
     useEffect(()=>{
         if(!fabricRef.current){return;};
