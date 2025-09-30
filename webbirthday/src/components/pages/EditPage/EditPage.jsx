@@ -7,6 +7,7 @@ import { useState, useContext, createContext, useRef, useEffect } from 'react';
 import Toolbox from './Toolbox';
 import WorkSpace from './WorkSpace';
 import { getTemplateById } from '../../../services/templateService';
+import { createCard} from '../../../services/cardService'
 
 export const PanelContext = createContext();
 
@@ -51,6 +52,44 @@ export default function EditPage(){
             return <div>Loading template...</div>;
         }
 
+
+    //Hàm xử lý lưu card
+    const handleSave = async () => {
+        if(!cardName){
+            alert("Vui vòng nhập tên thiệp");
+            return;
+        }
+        if (!fabricRef.current) {
+            alert("Canvas chưa khởi tạo");
+            return;
+        }
+    
+        const json = fabricRef.current.toJSON();
+        const fabricEdit = JSON.stringify(json);
+    
+        const imgData = fabricRef.current.toDataURL({
+            format: "png",
+            multiplier: 0.5,
+        });
+    
+        try {
+            const res = await createCard({
+            cardName: cardName || "New Card",
+            owner: null,
+            imgURL: [imgData],
+            fabricEdit,
+            cardDESC: cardDesc,
+            });
+            console.log("Saved:", res.data);
+            alert("Card saved!");
+        } catch (err) {
+            if (err.response) {
+            console.error("Server error:", err.response.data);
+            } else {
+            console.error("Client error:", err.message);
+            }
+        }
+    };
     return (
 
             <div className="relative h-screen w-screen">   
@@ -64,7 +103,7 @@ export default function EditPage(){
                         <input type="text" className="cardInputButton" value={cardName} onChange={(e)=>{setCardName(e.target.value)}}></input>
                         <p className="px-[10%] text-[1.5rem]">Nhập mô tả thiệp:</p>
                         <input type="text" className="cardInputButton" value={cardDesc} onChange={(e)=>{setCardDesc(e.target.value)}}></input>
-                        <div className="absolute my-2 right-[10%] w-[64px] h-[48px] bg-amber-300 font-bold flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black">Lưu</div>
+                        <div className="absolute my-2 right-[10%] w-[64px] h-[48px] bg-amber-300 font-bold flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black" onClick={handleSave}>Lưu</div>
                     </div>
                     
                     
