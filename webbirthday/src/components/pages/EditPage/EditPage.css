@@ -19,4 +19,7 @@
     .toolNumButton{
         @apply absolute right-0 top-0 w-[24px] h-[24px] bg-[#cde1f7] rounded-md shadow-sm shadow-black text-center items-center font-bold cursor-pointer select-none;
     }
+    .cardInputButton{
+        @apply w-[80%] h-[2rem] rounded-sm relative left-1/2 -translate-x-1/2  ;
+    }
 }

@@ -5,6 +5,7 @@ import { FaSave as SaveIcon } from "react-icons/fa";
 import { FaFileExport as ExportIcon } from "react-icons/fa6";
 import { ChromePicker } from 'react-color';
 import { createTemplate } from "../../../services/templateService";
+import { BsCardList as CardIcon} from "react-icons/bs";
 
 function ExportButton(){
     return (
@@ -13,6 +14,18 @@ function ExportButton(){
         </div>
     );
 }
+
+function CardButton(){
+
+
+    return (
+        <div>
+            <CardIcon className="panelButton"></CardIcon>
+        </div>
+    );
+}
+
+
 
 function SaveButton(){
     const { fabricRef } = useContext(PanelContext);
@@ -59,6 +72,7 @@ function SaveButton(){
 }
 
 export default function PropertiesPanel(){
+    const {toggleSaveCard, setToggleSaveCard} = useContext(PanelContext);
     const {closePanels,setClosePanels} = useContext(PanelContext);
     const {layerSelected, setLayerSelected} = useContext(PanelContext);
     const {toolSelected, setToolSelected} = useContext(PanelContext);
@@ -74,8 +88,12 @@ export default function PropertiesPanel(){
         <div id="propertiesContainer" className={`absolute right-0 h-full ${(!closePanels)?"w-full":"w-0"} bg-[#f8fafd] shadow-black shadow-md transition-all ease-in-out duration-700`}>
             {(!closePanels)&&
                 <div id="propertiesNavigates" className="absolute right-4 bottom-0 w-auto h-[4rem] flex flex-row gap-x-8">
+                    <div onClick={()=>{setToggleSaveCard((prev)=>!prev)}}>
+                        <CardButton></CardButton>
+                    </div>
                     <SaveButton></SaveButton>
-                        <ExportButton></ExportButton>
+                    <ExportButton></ExportButton>
+                    
                 </div>
             }
             <div className="mx-4">
