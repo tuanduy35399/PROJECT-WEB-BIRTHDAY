@@ -79,11 +79,20 @@ export default function WorkSpace({ fabricData }){
             Object.assign(brush, drawBrush);
             canvas.freeDrawingBrush = brush;
             }
-        if (canvas.isDrawingMode && toolSelected=="eraser"){{
-            const brush = new fabric.EraserBrush(canvas);
-            Object.assign(brush, eraserBrush);
-            canvas.freeDrawingBrush = brush;
-        }}
+        // if (canvas.isDrawingMode && toolSelected=="eraser"){{
+        //     const brush = new fabric.EraserBrush(canvas);
+        //     Object.assign(brush, eraserBrush);
+        //     canvas.freeDrawingBrush = brush;
+        // }}
+        if (canvas.isDrawingMode && toolSelected === "eraser") {
+  // fallback: dùng PencilBrush giả làm eraser
+        const brush = new fabric.PencilBrush(canvas);
+        Object.assign(brush, eraserBrush);
+        // trick: đổi màu về màu nền để giả lập eraser
+        brush.color = "lightyellow"; // cùng màu với background canvas
+        canvas.freeDrawingBrush = brush;
+        }
+
     },[toolSelected, drawBrush, eraserBrush, eraserType])
 
 
