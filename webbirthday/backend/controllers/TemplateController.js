@@ -4,7 +4,7 @@ const TemplateController = {
   // [POST] /api/templates
   create: async (req, res) => {
     try {
-      const { templateID, name, owner, imgURL, frabicEdit } = req.body;
+      const { templateID, name, owner, imgURL, fabricEdit } = req.body;
 
       // kiểm tra trùng templateID
       const existing = await Template.findOne({ templateID });
@@ -17,7 +17,7 @@ const TemplateController = {
         name,
         owner,
         imgURL,
-        frabicEdit,
+        fabricEdit,
       });
 
       await newTemplate.save();

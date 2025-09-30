@@ -15,9 +15,19 @@ function ExportButton(){
 }
 
 function SaveButton(){
+    const {fabricRef} = useContext(PanelContext);
+
+    const handleSave = async ()=> {
+        if(fabricRef.current) {
+            const json = fabricRef.current.toJSON();
+            const fabricEdit = JSON.stringify(json);
+
+            console.log("Fabric JSON:", fabricEdit);
+        }
+    }
     return(
-    <div onClick={()=>{console.log("save click click click")}}>
-        <SaveIcon className="panelButton"></SaveIcon>
+    <div onClick={handleSave}>
+        <SaveIcon  className="panelButton"></SaveIcon>
     </div>
     );
 }

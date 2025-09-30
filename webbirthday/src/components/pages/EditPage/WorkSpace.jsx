@@ -5,9 +5,8 @@ import { PanelContext } from './EditPage';
 
 
 export default function WorkSpace(){
-
     const canvasRef = useRef(null);
-    const fabricRef = useRef(null);
+    const {fabricRef} = useContext(PanelContext);
     const {toolSelected, setToolSelected} = useContext(PanelContext);
     const {drawBrush, setDrawBrush} = useContext(PanelContext);
     const {eraserBrush, setEraserBrush} = useContext(PanelContext);

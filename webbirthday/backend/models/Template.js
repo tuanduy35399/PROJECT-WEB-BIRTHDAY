@@ -7,7 +7,7 @@ const templateSchema = new mongoose.Schema(
     name: { type: String, required: true },
     owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // người tạo template
     imgURL: [{ type: String }], // ảnh preview
-    frabicEdit: { type: String }, // chuỗi format từ fabric
+    fabricEdit: { type: String }, // chuỗi format từ fabric
   },
   { timestamps: true }
 );
