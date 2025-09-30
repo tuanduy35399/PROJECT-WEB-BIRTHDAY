@@ -43,7 +43,8 @@ export default function WorkSpace(){
     useEffect(()=>{
         if(!fabricRef.current){return;};
         const canvas = fabricRef.current;
-        canvas.on("mouse:down", (opt)=>{
+
+        function handleMouseDown(opt){
             //event click: const evt = opt.e;      
             //vitri click: const pointer = canvas.getPointer(evt);
             if(toolSelected=="eraser"&&eraserType=="xoaobject"){
@@ -52,11 +53,9 @@ export default function WorkSpace(){
                     canvas.requestRenderAll();
                 }
             }
-        
-        });
+        }
 
-        canvas.on("mouse:up",(opt)=>{
-            
+        function handleMouseUp(opt){
             if(toolSelected=="eraser"&&eraserType=="xoaobject" ){
                 const activeObjects = canvas.getActiveObjects();
                      
@@ -66,9 +65,11 @@ export default function WorkSpace(){
                     canvas.requestRenderAll();
                 }
             }
-            
+        }
 
-        });
+        canvas.on("mouse:down", handleMouseDown);
+
+        canvas.on("mouse:up", handleMouseUp);
 
         canvas.isDrawingMode = (toolSelected=="brush" || (toolSelected=="eraser"&&eraserType=="macdinh"))?true:false;
         if (canvas.isDrawingMode && toolSelected=="brush") {
@@ -81,6 +82,12 @@ export default function WorkSpace(){
             Object.assign(brush, eraserBrush);
             canvas.freeDrawingBrush = brush;
         }}
+
+        return ()=>{
+            canvas.off("mouse:down", handleMouseDown);
+            canvas.off("mouse:up", handleMouseUp);
+        }
+
     },[toolSelected, drawBrush, eraserBrush, eraserType])
 
 
