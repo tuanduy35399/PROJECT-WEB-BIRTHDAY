@@ -36,6 +36,7 @@ function MainApp() {
           <Route path="/templates" element={<TemplateManager />} />
         </Route>
         <Route path="/edit" element={<EditPage />} />
+        <Route path="/edit/:id" element={<EditPage />} />
       </Routes>
     </Router>
   );

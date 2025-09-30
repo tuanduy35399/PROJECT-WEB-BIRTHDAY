@@ -1,15 +1,19 @@
 
     import './EditPage.css';
+    import { useParams } from "react-router-dom";
     import LayerPanel from './LayerPanel';
     import PropertiesPanel from './PropertiesPanel';
-    import { useState, useContext, createContext, useRef } from 'react';
+    import { useState, useContext, createContext, useRef, useEffect } from 'react';
     import Toolbox from './Toolbox';
     import WorkSpace from './WorkSpace';
+import { getTemplateById } from '../../../services/templateService';
 
     export const PanelContext = createContext();
 
 
 export default function EditPage(){
+      const { id } = useParams();
+    const [template, setTemplate] = useState(null);
     const [closePanels, setClosePanels] = useState(false);
     const fabricRef = useRef(null);
     const [layerSelected, setLayerSelected] = useState("chưa chọn");
@@ -29,18 +33,31 @@ export default function EditPage(){
     );
     const [eraserType, setEraserType] = useState("macdinh");
 
+
+
         function getSizeToolBox(toolsNum){
             return `w-[${toolsNum*64}px]`
         }
 
-
-
+         // lấy template từ server theo id
+  useEffect(() => {
+    if (!id) return;
+    getTemplateById(id)
+      .then((res) => {
+        setTemplate(res.data);
+      })
+      .catch((err) => console.error("Error fetching template:", err));
+  }, [id]);
+        if (!template) {
+            return <div>Loading template...</div>;
+        }
 
         return (
+            
             <div className="relative h-screen w-screen">
                 <PanelContext.Provider value={{ fabricRef, eraserBrush, setEraserBrush, eraserType, setEraserType, drawBrush, setDrawBrush, closePanels,setClosePanels,layerSelected, setLayerSelected, toolSelected, setToolSelected, toolNum, setToolNum, drawingMode, setDrawingMode}}>
                 <div id="canvasWorkSpace" className="absolute h-screen w-screen">
-                    <WorkSpace></WorkSpace>
+                    <WorkSpace fabricData={template.fabricEdit}></WorkSpace>
                 </div>
             
                 

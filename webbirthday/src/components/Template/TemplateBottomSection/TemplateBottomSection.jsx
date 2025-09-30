@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styles from "./TemplateBottomSection.module.css";
 import { getTemplates } from "../../../services/templateService";
@@ -16,7 +17,11 @@ const TemplateBottomSection = () => {
       <h2 className={styles.sectionTitle}>All Templates</h2>
       <div className={styles.gridContainer}>
         {templates.map((template) => (
-          <div key={template._id} className={styles.rectCard}>
+          <Link
+            key={template._id}
+            to={`/edit/${template._id}`} // 👈 dùng Link thay navigate
+            className={styles.rectCard}
+          >
             <div className={styles.cardTop}>
               <img
                 src={
@@ -34,7 +39,7 @@ const TemplateBottomSection = () => {
               <p>{new Date(template.createdAt).toLocaleDateString()}</p>
               <p>{template.owner?.username || "Unknown"}</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
@@ -42,3 +47,4 @@ const TemplateBottomSection = () => {
 };
 
 export default TemplateBottomSection;
+ 

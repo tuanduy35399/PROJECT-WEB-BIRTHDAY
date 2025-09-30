@@ -4,7 +4,7 @@ import { PanelContext } from './EditPage';
 import { FaSave as SaveIcon } from "react-icons/fa";
 import { FaFileExport as ExportIcon } from "react-icons/fa6";
 import { ChromePicker } from 'react-color';
-
+import { createTemplate } from "../../../services/templateService";
 
 function ExportButton(){
     return (
@@ -15,21 +15,47 @@ function ExportButton(){
 }
 
 function SaveButton(){
-    const {fabricRef} = useContext(PanelContext);
+    const { fabricRef } = useContext(PanelContext);
 
-    const handleSave = async ()=> {
-        if(fabricRef.current) {
-            const json = fabricRef.current.toJSON();
-            const fabricEdit = JSON.stringify(json);
+  const handleSave = async () => {
+    if (!fabricRef.current) {
+        alert("Canvas chưa khởi tạo");
+        return;
+    }
 
-            console.log("Fabric JSON:", fabricEdit);
+    const json = fabricRef.current.toJSON();
+    const fabricEdit = JSON.stringify(json);
+
+    const imgData = fabricRef.current.toDataURL({
+        format: "png",
+        multiplier: 0.5,
+    });
+
+    try {
+        const res = await createTemplate({
+        templateID: Date.now().toString(),
+        name: "My Template",
+        owner: null,
+        imgURL: [imgData],
+        fabricEdit,
+        });
+        console.log("Saved:", res.data);
+        alert("Template saved!");
+    } catch (err) {
+        if (err.response) {
+        console.error("Server error:", err.response.data);
+        } else {
+        console.error("Client error:", err.message);
         }
     }
-    return(
+    };
+
+
+  return (
     <div onClick={handleSave}>
-        <SaveIcon  className="panelButton"></SaveIcon>
+      <SaveIcon className="panelButton" />
     </div>
-    );
+  );
 }
 
 export default function PropertiesPanel(){
