@@ -26,12 +26,8 @@ export default function EditPage(){
                 width: 15,
             }
         );
-    const [eraserBrush, setEraserBrush] = useState(
-        {
-            width:15,
-        }
-    );
-    const [eraserType, setEraserType] = useState("macdinh");
+
+
 
 
 
@@ -55,7 +51,7 @@ export default function EditPage(){
         return (
             
             <div className="relative h-screen w-screen">
-                <PanelContext.Provider value={{ fabricRef, eraserBrush, setEraserBrush, eraserType, setEraserType, drawBrush, setDrawBrush, closePanels,setClosePanels,layerSelected, setLayerSelected, toolSelected, setToolSelected, toolNum, setToolNum, drawingMode, setDrawingMode}}>
+                <PanelContext.Provider value={{ fabricRef, drawBrush, setDrawBrush, closePanels,setClosePanels,layerSelected, setLayerSelected, toolSelected, setToolSelected, toolNum, setToolNum, drawingMode, setDrawingMode}}>
                 <div id="canvasWorkSpace" className="absolute h-screen w-screen">
                     <WorkSpace fabricData={template.fabricEdit}></WorkSpace>
                 </div>
