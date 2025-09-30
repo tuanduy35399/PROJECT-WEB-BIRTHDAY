@@ -2,7 +2,7 @@
 import './EditPage.css';
 import LayerPanel from './LayerPanel';
 import PropertiesPanel from './PropertiesPanel';
-import { useState, useContext, createContext } from 'react';
+import { useState, useContext, createContext, useRef } from 'react';
 import Toolbox from './Toolbox';
 import WorkSpace from './WorkSpace';
 
@@ -10,6 +10,7 @@ export const PanelContext = createContext();
 
 
 export default function EditPage(){
+    const fabricRef = useRef(null);
     const [closePanels, setClosePanels] = useState(false);
     const [layerSelected, setLayerSelected] = useState("chưa chọn");
     const [toolSelected, setToolSelected] = useState("chưa chọn");
@@ -30,7 +31,7 @@ export default function EditPage(){
 
     return (
         <div className="relative h-screen w-screen">
-             <PanelContext.Provider value={{drawBrush, setDrawBrush, closePanels,setClosePanels,layerSelected, setLayerSelected, toolSelected, setToolSelected, toolNum, setToolNum, drawingMode, setDrawingMode}}>
+             <PanelContext.Provider value={{fabricRef, drawBrush, setDrawBrush, closePanels,setClosePanels,layerSelected, setLayerSelected, toolSelected, setToolSelected, toolNum, setToolNum, drawingMode, setDrawingMode}}>
             <div id="canvasWorkSpace" className="absolute h-screen w-screen">
                 <WorkSpace></WorkSpace>
             </div>
