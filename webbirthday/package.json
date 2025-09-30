@@ -15,7 +15,7 @@
     "bootstrap": "^5.3.8",
     "express": "^5.1.0",
     "expressjs": "^1.0.1",
-    "fabric": "^6.7.1",
+    "fabric": "^5.2.1",
     "mongoose": "^8.18.1",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",

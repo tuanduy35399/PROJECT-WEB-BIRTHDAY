@@ -15,4 +15,8 @@
     .toolButtonSelected{
         @apply flex p-2 w-[48px] h-[48px] bg-[#f8fafd] rounded-xl justify-center items-center cursor-pointer shadow-black shadow-sm;
     }
+
+    .toolNumButton{
+        @apply absolute right-0 top-0 w-[24px] h-[24px] bg-[#cde1f7] rounded-md shadow-sm shadow-black text-center items-center font-bold cursor-pointer select-none;
+    }
 }

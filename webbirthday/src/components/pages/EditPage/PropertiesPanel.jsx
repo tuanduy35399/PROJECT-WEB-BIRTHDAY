@@ -37,8 +37,12 @@ export default function PropertiesPanel(){
     const {layerSelected, setLayerSelected} = useContext(PanelContext);
     const {toolSelected, setToolSelected} = useContext(PanelContext);
     const {drawBrush, setDrawBrush} = useContext(PanelContext);
+    const {eraserType,setEraserType} = useContext(PanelContext);
+    const {eraserBrush,setEraserBrush} = useContext(PanelContext);
     const [brushSize, setBrushSize] = useState(15);
     const [brushColor, setBrushColor] = useState("blue");
+    const [eraserSize, setEraserSize] = useState(15);
+    
 
 
     return (
@@ -69,6 +73,25 @@ export default function PropertiesPanel(){
                     
 
                 </div>}
+                {(toolSelected=="eraser"&&
+                    <div className="flex flex-col">
+                        {JSON.stringify(eraserBrush) + ", " +eraserType}
+                        <p>Chọn loại eraser:</p>
+                        <select name="eraserTypeBox" onChange={(e)=>{setEraserType(e.target.value)}}>
+                            <option value="macdinh">Mặc định</option>
+                            <option value="xoaobject">Xóa object</option>
+                        </select>
+                       {(eraserType=="macdinh")&&
+                       <div className="flex flex-col items-center justify-center gap-2 my-2">
+                            <input className="w-full" type="number" value={eraserSize} onChange={(e)=>{setEraserSize((prev)=>{if(e.target.value>=0) return e.target.value; else return prev;})}}></input>
+                            <div className="w-[64px] h-[48px] bg-amber-300 flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black" 
+                                onClick={()=>{setEraserBrush({width:eraserSize})}}
+                            >Đổi tẩy</div>
+
+                        </div>}
+
+                    </div>
+                )}
 
                 
             </div>

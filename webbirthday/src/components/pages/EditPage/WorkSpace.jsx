@@ -1,5 +1,6 @@
 import {useEffect, useState, useRef, useContext} from 'react';
-import * as fabric from "fabric";
+import { fabric } from "fabric/dist/fabric";
+
 import { PanelContext } from './EditPage';
 
 
@@ -8,6 +9,8 @@ export default function WorkSpace(){
     const {fabricRef} = useContext(PanelContext);
     const {toolSelected, setToolSelected} = useContext(PanelContext);
     const {drawBrush, setDrawBrush} = useContext(PanelContext);
+    const {eraserBrush, setEraserBrush} = useContext(PanelContext);
+    const {eraserType,setEraserType} = useContext(PanelContext);
 
     useEffect(()=>{
         if(!canvasRef.current){return;};
@@ -29,25 +32,56 @@ export default function WorkSpace(){
         });
 
         canvas.add(rect);
+        
+
         return () =>{
             canvas.dispose();
             fabricRef.current=null;
         }
-
-
     },[]);
 
     useEffect(()=>{
         if(!fabricRef.current){return;};
         const canvas = fabricRef.current;
-        canvas.isDrawingMode = (toolSelected=="brush")?true:false;
-        if (canvas.isDrawingMode) {
-            console.log(drawBrush);
+        canvas.on("mouse:down", (opt)=>{
+            //event click: const evt = opt.e;      
+            //vitri click: const pointer = canvas.getPointer(evt);
+            if(toolSelected=="eraser"&&eraserType=="xoaobject"){
+                if(opt.target){
+                    canvas.remove(opt.target);
+                    canvas.requestRenderAll();
+                }
+            }
+        
+        });
+
+        canvas.on("mouse:up",(opt)=>{
+            
+            if(toolSelected=="eraser"&&eraserType=="xoaobject" ){
+                const activeObjects = canvas.getActiveObjects();
+                     
+                if (activeObjects.length) {
+                    activeObjects.forEach((obj) => canvas.remove(obj));
+                    canvas.discardActiveObject();
+                    canvas.requestRenderAll();
+                }
+            }
+            
+
+        });
+
+        canvas.isDrawingMode = (toolSelected=="brush" || (toolSelected=="eraser"&&eraserType=="macdinh"))?true:false;
+        if (canvas.isDrawingMode && toolSelected=="brush") {
             const brush = new fabric.PencilBrush(canvas);
             Object.assign(brush, drawBrush);
             canvas.freeDrawingBrush = brush;
             }
-    },[toolSelected,drawBrush])
+        if (canvas.isDrawingMode && toolSelected=="eraser"){{
+            const brush = new fabric.EraserBrush(canvas);
+            Object.assign(brush, eraserBrush);
+            canvas.freeDrawingBrush = brush;
+        }}
+    },[toolSelected, drawBrush, eraserBrush, eraserType])
 
 
     return (
