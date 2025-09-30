@@ -16,7 +16,7 @@ function ExportButton(){
 
 function SaveButton(){
     return(
-    <div>
+    <div onClick={()=>{console.log("save click click click")}}>
         <SaveIcon className="panelButton"></SaveIcon>
     </div>
     );

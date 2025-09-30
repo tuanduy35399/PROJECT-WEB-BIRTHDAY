@@ -13,7 +13,7 @@ export default function EditPage(){
     const [closePanels, setClosePanels] = useState(false);
     const [layerSelected, setLayerSelected] = useState("chưa chọn");
     const [toolSelected, setToolSelected] = useState("chưa chọn");
-    const [toolNum, setToolNum] = useState(5);
+    const [toolNum, setToolNum] = useState(6);
     const [drawingMode, setDrawingMode] = useState(false);
     const [drawBrush, setDrawBrush] = useState(
         {
