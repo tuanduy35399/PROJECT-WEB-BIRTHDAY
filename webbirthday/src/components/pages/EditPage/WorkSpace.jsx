@@ -1,10 +1,12 @@
 import {useEffect, useState, useRef, useContext} from 'react';
-import { fabric } from "fabric/dist/fabric";
+import { fabric } from "fabric";
+
 
 import { PanelContext } from './EditPage';
 
 
 export default function WorkSpace(){
+    
     const canvasRef = useRef(null);
     const {fabricRef} = useContext(PanelContext);
     const {toolSelected, setToolSelected} = useContext(PanelContext);
