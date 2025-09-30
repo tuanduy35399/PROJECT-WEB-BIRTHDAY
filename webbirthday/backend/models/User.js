@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
-    userID: { type: String, required: true, unique: true },
+    // ❌ bỏ userID
     cards: [{ type: mongoose.Schema.Types.ObjectId, ref: "Card" }],
   },
   { timestamps: true }

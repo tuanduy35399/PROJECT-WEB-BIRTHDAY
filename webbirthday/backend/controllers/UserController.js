@@ -18,21 +18,11 @@ const UserController = {
       // Hash password
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Generate unique 4-digit userID
-      let userID;
-      let isUnique = false;
-      while (!isUnique) {
-        userID = Math.floor(1000 + Math.random() * 9000).toString(); // 4 chữ số
-        const existingID = await User.findOne({ userID });
-        if (!existingID) isUnique = true;
-      }
-
       const newUser = new User({
         username,
         password: hashedPassword,
-        userID,
-        isAdmin: role === "ADMIN", // xác định admin hay không
-        isActive: true, // mặc định true
+        isAdmin: role === "ADMIN", // xác định quyền
+        isActive: true,
       });
 
       await newUser.save();
@@ -40,9 +30,8 @@ const UserController = {
       res.status(201).json({
         message: "User created successfully",
         user: {
-          id: newUser._id,
+          id: newUser._id, // dùng _id thay cho userID
           username: newUser.username,
-          userID: newUser.userID,
           isAdmin: newUser.isAdmin,
           isActive: newUser.isActive,
         },
@@ -94,7 +83,7 @@ const UserController = {
     try {
       const users = await User.find(
         {},
-        "username isAdmin isActive createdAt userID cards"
+        "username isAdmin isActive createdAt cards"
       );
       res.json(users);
     } catch (err) {
@@ -108,7 +97,7 @@ const UserController = {
       const { id } = req.params;
       const user = await User.findById(id).populate(
         "cards",
-        "cardName imgURL lastEdit"
+        "cardName imgURL createdAt updatedAt"
       );
       if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -117,6 +106,7 @@ const UserController = {
       res.status(500).json({ error: err.message });
     }
   },
+
   // [PUT] /api/users/:id
   update: async (req, res) => {
     try {

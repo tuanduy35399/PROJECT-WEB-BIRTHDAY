@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 
 const templateSchema = new mongoose.Schema(
   {
-    templateID: { type: String, required: true, unique: true }, // id riêng cho template
+    // ❌ bỏ templateID
     name: { type: String, required: true },
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // người tạo template
-    imgURL: [{ type: String }], // ảnh preview
-    fabricEdit: { type: String }, // chuỗi format từ fabric
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    imgURL: [{ type: String }],
+    fabricEdit: { type: String },
   },
   { timestamps: true }
 );

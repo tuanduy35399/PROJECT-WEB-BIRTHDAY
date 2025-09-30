@@ -28,14 +28,11 @@ const CardController = {
     }
   },
 
-  // [POST] /api/cards
   create: async (req, res) => {
     try {
-      const { cardID, cardName, imgURL, cardDESC, fabricEdit, owner } =
-        req.body;
+      const { cardName, imgURL, cardDESC, fabricEdit, owner } = req.body;
 
       const newCard = new Card({
-        cardID,
         cardName,
         imgURL,
         cardDESC,
