@@ -46,21 +46,17 @@ export default function WorkSpace({ fabricData }){
     useEffect(()=>{
         if(!fabricRef.current){return;};
         const canvas = fabricRef.current;
-        canvas.on("mouse:down", (opt)=>{
-            //event click: const evt = opt.e;      
-            //vitri click: const pointer = canvas.getPointer(evt);
-            if(toolSelected=="eraser"&&eraserType=="xoaobject"){
+
+        function handleMouseDown(opt){
+            if(toolSelected=="eraser"){
                 if(opt.target){
                     canvas.remove(opt.target);
                     canvas.requestRenderAll();
                 }
             }
-        
-        });
-
-        canvas.on("mouse:up",(opt)=>{
-            
-            if(toolSelected=="eraser"&&eraserType=="xoaobject" ){
+        };
+        function handleMouseUp(opt){
+             if(toolSelected=="eraser"){
                 const activeObjects = canvas.getActiveObjects();
                      
                 if (activeObjects.length) {
@@ -70,27 +66,22 @@ export default function WorkSpace({ fabricData }){
                 }
             }
             
+        }
+        canvas.on("mouse:down", handleMouseDown);
 
-        });
+        canvas.on("mouse:up", handleMouseUp);
 
-        canvas.isDrawingMode = (toolSelected=="brush" || (toolSelected=="eraser"&&eraserType=="macdinh"))?true:false;
+        canvas.isDrawingMode = (toolSelected=="brush")?true:false;
         if (canvas.isDrawingMode && toolSelected=="brush") {
             const brush = new fabric.PencilBrush(canvas);
             Object.assign(brush, drawBrush);
             canvas.freeDrawingBrush = brush;
             }
-        // if (canvas.isDrawingMode && toolSelected=="eraser"){{
-        //     const brush = new fabric.EraserBrush(canvas);
-        //     Object.assign(brush, eraserBrush);
-        //     canvas.freeDrawingBrush = brush;
-        // }}
-        if (canvas.isDrawingMode && toolSelected === "eraser") {
-  // fallback: dùng PencilBrush giả làm eraser
-        const brush = new fabric.PencilBrush(canvas);
-        Object.assign(brush, eraserBrush);
-        // trick: đổi màu về màu nền để giả lập eraser
-        brush.color = "lightyellow"; // cùng màu với background canvas
-        canvas.freeDrawingBrush = brush;
+
+
+        return ()=>{
+            canvas.off("mouse:down", handleMouseDown);
+            canvas.off("mouse:up", handleMouseUp);
         }
 
     },[toolSelected, drawBrush, eraserBrush, eraserType])
