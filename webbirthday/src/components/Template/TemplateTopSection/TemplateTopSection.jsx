@@ -31,7 +31,7 @@ const TemplateTopSection = () => {
           <h1 className={styles.title}>TEMPLATES</h1>
           <button
             className={styles.pillBtn}
-            onClick={() => setOpenDrawer(true)}
+            onClick={() => navigate("/edit/templates/blank")}
           >
             + NEW
           </button>

@@ -4,16 +4,9 @@ const TemplateController = {
   // [POST] /api/templates
   create: async (req, res) => {
     try {
-      const { templateID, name, owner, imgURL, fabricEdit } = req.body;
-
-      // kiểm tra trùng templateID
-      const existing = await Template.findOne({ templateID });
-      if (existing) {
-        return res.status(400).json({ message: "TemplateID already exists" });
-      }
+      const {  name, owner, imgURL, fabricEdit } = req.body;
 
       const newTemplate = new Template({
-        templateID,
         name,
         owner,
         imgURL,

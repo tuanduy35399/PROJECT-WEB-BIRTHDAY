@@ -6,17 +6,20 @@ import PropertiesPanel from './PropertiesPanel';
 import { useState, useContext, createContext, useRef, useEffect } from 'react';
 import Toolbox from './Toolbox';
 import WorkSpace from './WorkSpace';
-import { getTemplateById } from '../../../services/templateService';
-import { createCard} from '../../../services/cardService'
-
+import { createTemplate, getTemplateById } from '../../../services/templateService';
+import { useNavigate } from 'react-router-dom';
+import { createCard, getCardById } from '../../../services/cardService';
 export const PanelContext = createContext();
 
 
 export default function EditPage(){
+    const navigate = useNavigate();
     const [toggleSaveCard, setToggleSaveCard] = useState(false);
     const [cardName, setCardName] = useState("");
     const [cardDesc, setCardDesc] = useState("");
-    const { id } = useParams();
+    const [isCard, setIsCard] = useState(false);
+
+    const { id, mode } = useParams();
     const [template, setTemplate] = useState(null);
     const [closePanels, setClosePanels] = useState(false);
     const fabricRef = useRef(null);
@@ -38,58 +41,74 @@ export default function EditPage(){
         function getSizeToolBox(toolsNum){
             return `w-[${toolsNum*64}px]`
         }
-
+        
          // lấy template từ server theo id
-  useEffect(() => {
-    if (!id) return;
-    getTemplateById(id)
-      .then((res) => {
-        setTemplate(res.data);
-      })
-      .catch((err) => console.error("Error fetching template:", err));
-  }, [id]);
-        if (!template) {
-            return <div>Loading template...</div>;
-        }
+    useEffect(() => {
+    if ( id === "blank") {
+      setTemplate({ fabricEdit: null, name: "Blank Template" });
+      return;
+    }
+
+    if (mode === "cards") {
+      getCardById(id)
+        .then((res) => setTemplate(res.data))
+        .catch((err) => console.error("Error fetching card:", err));
+    } else if (mode === "templates") {
+      getTemplateById(id)
+        .then((res) => setTemplate(res.data))
+        .catch((err) => console.error("Error fetching template:", err));
+    }
+  }, [id, mode]);
+
+    if (!template) {
+        return <div>Loading template...</div>;
+    }
 
 
     //Hàm xử lý lưu card
-    const handleSave = async () => {
-        if(!cardName){
-            alert("Vui vòng nhập tên thiệp");
-            return;
-        }
-        if (!fabricRef.current) {
-            alert("Canvas chưa khởi tạo");
-            return;
-        }
-    
-        const json = fabricRef.current.toJSON();
-        const fabricEdit = JSON.stringify(json);
-    
-        const imgData = fabricRef.current.toDataURL({
-            format: "png",
-            multiplier: 0.5,
-        });
-    
-        try {
-            const res = await createCard({
-            cardName: cardName || "New Card",
-            owner: null,
-            imgURL: [imgData],
-            fabricEdit,
-            cardDESC: cardDesc,
-            });
-            console.log("Saved:", res.data);
-            alert("Card saved!");
-        } catch (err) {
-            if (err.response) {
-            console.error("Server error:", err.response.data);
-            } else {
-            console.error("Client error:", err.message);
-            }
-        }
-    };
+   const handleSave = async () => {
+  if (!cardName) {
+    alert("Vui lòng nhập tên thiệp");
+    return;
+  }
+  if (!fabricRef.current) {
+    alert("Canvas chưa khởi tạo");
+    return;
+  }
+
+  const json = fabricRef.current.toJSON();
+  const fabricEdit = JSON.stringify(json);
+
+  try {
+    if (isCard) {
+      // ✅ Lưu thành Card
+      const res = await createCard({
+        cardName,
+        owner: null,
+        fabricEdit,
+        cardDESC: cardDesc,
+      });
+      console.log("Card saved:", res.data);
+      alert("Đã lưu thiệp (Card)!");
+      navigate("/cards");
+    } else {
+      // ✅ Lưu thành Template
+      const res = await createTemplate({
+        name: cardName,
+        owner: null,
+        fabricEdit,
+        cardDESC: cardDesc,
+      });
+      console.log("Template saved:", res.data);
+      alert("Đã lưu Template!");
+      navigate("/templates");
+    }
+  } catch (err) {
+    console.error("Save error:", err.response?.data || err.message);
+    alert("Lưu thất bại, xem console để biết chi tiết!");
+  }
+};
+
     return (
 
             <div className="relative h-screen w-screen">   
@@ -103,6 +122,15 @@ export default function EditPage(){
                         <input type="text" className="cardInputButton" value={cardName} onChange={(e)=>{setCardName(e.target.value)}}></input>
                         <p className="px-[10%] text-[1.5rem]">Nhập mô tả thiệp:</p>
                         <input type="text" className="cardInputButton" value={cardDesc} onChange={(e)=>{setCardDesc(e.target.value)}}></input>
+                        <label className="flex items-center px-[10%] text-[1.5rem] mt-2">
+                        <input
+                            type="checkbox"
+                            checked={isCard}
+                            onChange={(e) => setIsCard(e.target.checked)}
+                            className="mr-2 w-5 h-5"
+                        />
+                        Lưu dưới dạng Card
+                        </label>
                         <div className="absolute my-2 right-[10%] w-[64px] h-[48px] bg-amber-300 font-bold flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black" onClick={handleSave}>Lưu</div>
                     </div>
                     
@@ -110,7 +138,7 @@ export default function EditPage(){
                 </div>
                 }
 
-                <PanelContext.Provider value={{toggleSaveCard, setToggleSaveCard, fabricRef, drawBrush, setDrawBrush, closePanels,setClosePanels,layerSelected, setLayerSelected, toolSelected, setToolSelected, toolNum, setToolNum, drawingMode, setDrawingMode}}>
+                <PanelContext.Provider value={{toggleSaveCard, setToggleSaveCard, fabricRef, drawBrush, setDrawBrush, closePanels,setClosePanels,layerSelected, setLayerSelected, toolSelected, setToolSelected, toolNum, setToolNum, drawingMode, setDrawingMode, id, mode}}>
                 <div id="canvasWorkSpace" className="absolute h-screen w-screen">
                     <WorkSpace fabricData={template.fabricEdit}></WorkSpace>
                 </div>
