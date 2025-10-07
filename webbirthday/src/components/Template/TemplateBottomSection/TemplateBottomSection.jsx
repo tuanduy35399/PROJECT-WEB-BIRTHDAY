@@ -19,7 +19,7 @@ const TemplateBottomSection = () => {
         {templates.map((template) => (
           <Link
             key={template._id}
-            to={`/edit/${template._id}`} // 👈 dùng Link thay navigate
+            to={`/edit/templates/${template._id}`} // 👈 dùng Link thay navigate
             className={styles.rectCard}
           >
             <div className={styles.cardTop}>

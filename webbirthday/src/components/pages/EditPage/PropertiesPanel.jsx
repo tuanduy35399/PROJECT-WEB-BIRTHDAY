@@ -4,9 +4,11 @@ import { PanelContext } from './EditPage';
 import { FaSave as SaveIcon } from "react-icons/fa";
 import { FaFileExport as ExportIcon } from "react-icons/fa6";
 import { ChromePicker } from 'react-color';
-import { createTemplate } from "../../../services/templateService";
+import {  updateTemplate } from "../../../services/templateService";
 import { BsCardList as CardIcon} from "react-icons/bs";
-
+import { useNavigate } from 'react-router-dom';
+import {  toast } from 'react-toastify';
+import { updateCard } from '../../../services/cardService';
 function ExportButton(){
     return (
         <div>
@@ -28,9 +30,10 @@ function CardButton(){
 
 
 function SaveButton(){
+    const navigate = useNavigate();
+    const {id, mode} = useContext(PanelContext);
     const { fabricRef } = useContext(PanelContext);
-
-  const handleSave = async () => {
+    const handleSave = async () => {
     if (!fabricRef.current) {
         alert("Canvas chưa khởi tạo");
         return;
@@ -41,29 +44,38 @@ function SaveButton(){
 
     const imgData = fabricRef.current.toDataURL({
         format: "png",
-        multiplier: 0.5,
+        multiplier: 0.2,
     });
-
+   if (mode === "templates") {
     try {
-        const res = await createTemplate({
-        templateID: Date.now().toString(),
+        const res = await updateTemplate(id, {
         name: "My Template",
         owner: null,
         imgURL: [imgData],
         fabricEdit,
         });
         console.log("Saved:", res.data);
-        alert("Template saved!");
+        navigate("/templates");
     } catch (err) {
-        if (err.response) {
-        console.error("Server error:", err.response.data);
-        } else {
-        console.error("Client error:", err.message);
-        }
+        console.error("Error updating template:", err);
     }
-    };
+    }
 
-
+    if (mode === "cards") {
+    try {
+        const res = await updateCard(id, {
+        cardName: "My Card",
+        owner: null,
+        imgURL: [imgData],
+        fabricEdit,
+        });
+        console.log("Saved:", res.data);
+        navigate("/cards");
+    } catch (err) {
+        console.error("Error updating card:", err);
+    }
+    }
+    }
   return (
     <div onClick={handleSave}>
       <SaveIcon className="panelButton" />
@@ -72,6 +84,7 @@ function SaveButton(){
 }
 
 export default function PropertiesPanel(){
+    
     const {toggleSaveCard, setToggleSaveCard} = useContext(PanelContext);
     const {closePanels,setClosePanels} = useContext(PanelContext);
     const {layerSelected, setLayerSelected} = useContext(PanelContext);

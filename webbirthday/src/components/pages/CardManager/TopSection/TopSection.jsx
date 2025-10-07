@@ -1,23 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./TopSection.module.css";
 import { useNavigate } from "react-router-dom";
+import { getTemplates } from "../../../../services/templateService";
+import { createCard } from "../../../../services/cardService";
 
 const TopSection = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const navigate = useNavigate();
+    const [templates, setTemplates] = useState([]);
 
-  const templates = Array.from({ length: 8 }, (_, i) => ({
-    id: i + 1,
-    name: `Template ${i + 1}`,
-    img: `https://via.placeholder.com/200x120?text=Template+${i + 1}`,
-  }));
 
-  const handleChooseTemplate = (template) => {
-    setOpenDrawer(false);
-    // điều hướng tới trang edit với template id
-    navigate(`/edit?templateId=${template.id}`);
-  };
+  const handleChooseTemplate = async (template) => {
+  setOpenDrawer(false);
 
+  try {
+    navigate(`/edit/templates/${template._id}`);
+  } catch (err) {
+    console.error("Error creating card:", err);
+  }
+};
+  useEffect(() => {
+      getTemplates()
+        .then((res) => setTemplates(res.data))
+        .catch((err) => console.error("Error fetching templates:", err));
+    }, []);
   return (
     <div className={styles.topSection}>
       <div className={styles.containWrapper}>
@@ -46,11 +52,11 @@ const TopSection = () => {
         <div className={`${styles.drawerBody} ${styles.horizontalScroll}`}>
           {templates.map((template) => (
             <div
-              key={template.id}
+              key={template._id}
               className={styles.templateCard}
               onClick={() => handleChooseTemplate(template)}
             >
-              <img src={template.img} alt={template.name} />
+              <img src={template.imgURL} alt={template.name} />
               <p>{template.name}</p>
             </div>
           ))}
