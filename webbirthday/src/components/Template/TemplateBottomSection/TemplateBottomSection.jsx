@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styles from "./TemplateBottomSection.module.css";
 import { getTemplates } from "../../../services/templateService";
+import { toast } from "react-toastify";
 
 const TemplateBottomSection = () => {
   const [templates, setTemplates] = useState([]);
@@ -9,7 +10,7 @@ const TemplateBottomSection = () => {
   useEffect(() => {
     getTemplates()
       .then((res) => setTemplates(res.data))
-      .catch((err) => console.error("Error fetching templates:", err));
+      .catch((err) => toast.error("Error fetching templates:", err));
   }, []);
 
   return (

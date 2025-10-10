@@ -3,6 +3,7 @@ import styles from "./TopSection.module.css";
 import { useNavigate } from "react-router-dom";
 import { getTemplates } from "../../../../services/templateService";
 import { createCard } from "../../../../services/cardService";
+import { toast } from "react-toastify";
 
 const TopSection = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -16,13 +17,13 @@ const TopSection = () => {
   try {
     navigate(`/edit/templates/${template._id}`);
   } catch (err) {
-    console.error("Error creating card:", err);
+    toast.error("Không thể chuyển trang", err);
   }
 };
   useEffect(() => {
       getTemplates()
         .then((res) => setTemplates(res.data))
-        .catch((err) => console.error("Error fetching templates:", err));
+        .catch((err) => toast.error("Không thể lấy Template", err));
     }, []);
   return (
     <div className={styles.topSection}>

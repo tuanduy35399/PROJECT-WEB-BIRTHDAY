@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./BottomSection.module.css";
 import { getCards } from "../../../../services/cardService";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const BottomSection = () => {
   const [cardsData, setCardsData] = useState([]);
@@ -13,7 +14,7 @@ const BottomSection = () => {
         setCardsData(res.data);
         console.log(res);
       } catch (err) {
-        console.error("Error fetching cards:", err);
+        toast.error("Không thể lấy Card", err);
       }
     };
 

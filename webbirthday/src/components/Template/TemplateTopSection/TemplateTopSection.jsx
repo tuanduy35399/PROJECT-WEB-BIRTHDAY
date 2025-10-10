@@ -3,6 +3,7 @@ import styles from "./TemplateTopSection.module.css";
 // import bg from "../../../assets/createbg2.jpg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const TemplateTopSection = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -16,7 +17,7 @@ const TemplateTopSection = () => {
         const res = await axios.get("http://localhost:5000/api/templates");
         setTemplates(res.data);
       } catch (err) {
-        console.error("Error fetching templates:", err);
+        toast.error("Error fetching templates:", err);
       }
     };
 
