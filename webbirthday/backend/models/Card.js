@@ -3,12 +3,11 @@ import mongoose from "mongoose";
 
 const cardSchema = new mongoose.Schema(
   {
-    // ❌ bỏ cardID
     cardName: { type: String, required: true },
     isEditable: { type: Boolean, default: true },
     imgURL: [{ type: String }],
     cardDESC: { type: String },
-    fabricEdit: { type: Object },
+    fabricEdit: { type: String }, // ✅ Đổi về String
     owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }

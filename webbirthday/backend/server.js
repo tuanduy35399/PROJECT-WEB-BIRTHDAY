@@ -5,7 +5,9 @@ import dotenv from "dotenv";
 // Import routes
 import cardRoutes from "./routes/cardRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import templateRoutes from "./routes/templateRoutes.js"
+import templateRoutes from "./routes/templateRoutes.js";
+import uploadBase64Routes from "./routes/uploadBase64.js";
+
 dotenv.config();
 
 const app = express();
@@ -23,14 +25,18 @@ mongoose
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-  app.get("/", (req, res) => {
-    res.send("Backend is running 🚀");
-  });
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
+});
 
 //Routes
 app.use("/api/cards", cardRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/templates", templateRoutes);
+// server.js
+app.use("/api/upload-base64", uploadBase64Routes);
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>

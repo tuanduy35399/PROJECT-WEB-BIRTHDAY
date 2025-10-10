@@ -4,7 +4,6 @@ const CardController = {
   // [GET] /api/cards
   getAll: async (req, res) => {
     try {
-      // lấy đúng field trong schema
       const cards = await Card.find(
         {},
         "cardName imgURL cardDESC owner createdAt"
@@ -28,6 +27,7 @@ const CardController = {
     }
   },
 
+  // [POST] /api/cards
   create: async (req, res) => {
     try {
       const { cardName, imgURL, cardDESC, fabricEdit, owner } = req.body;
@@ -36,9 +36,13 @@ const CardController = {
         cardName,
         imgURL,
         cardDESC,
-        fabricEdit,
+        fabricEdit:
+          typeof fabricEdit === "string"
+            ? fabricEdit
+            : JSON.stringify(fabricEdit), // ✅ stringify nếu cần
         owner,
       });
+
       await newCard.save();
 
       res.status(201).json({ message: "Card created", card: newCard });
@@ -51,7 +55,12 @@ const CardController = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-      const updates = req.body;
+      const updates = { ...req.body };
+
+      // ✅ ép stringify nếu cần
+      if (updates.fabricEdit && typeof updates.fabricEdit !== "string") {
+        updates.fabricEdit = JSON.stringify(updates.fabricEdit);
+      }
 
       const updatedCard = await Card.findByIdAndUpdate(id, updates, {
         new: true,
