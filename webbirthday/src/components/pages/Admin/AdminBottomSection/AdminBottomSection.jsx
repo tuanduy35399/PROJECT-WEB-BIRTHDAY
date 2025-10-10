@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./AdminBottomSection.module.css";
 import UserDetailDrawer from "../UserDetailDrawer/UserDetailDrawer";
 import { getUsers, updateUserStatus } from "../../../../services/userService";
-
+import { toast } from "react-toastify";
 const AdminBottomSection = () => {
   const [accounts, setAccounts] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -13,7 +13,7 @@ const AdminBottomSection = () => {
         const data = await getUsers();
         setAccounts(data);
       } catch (err) {
-        console.error("Error fetching users:", err);
+        toast.error("Không thể lấy User");
       }
     };
     fetchUsers();
@@ -28,7 +28,7 @@ const AdminBottomSection = () => {
         )
       );
     } catch (err) {
-      console.error("Error updating status:", err);
+      toast.error("Không thể cập nhật trạng thái");
     }
   };
 

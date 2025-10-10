@@ -35,7 +35,7 @@ function SaveButton(){
     const { fabricRef } = useContext(PanelContext);
     const handleSave = async () => {
     if (!fabricRef.current) {
-        alert("Canvas chưa khởi tạo");
+        toast.error("Canvas chưa khởi tạo");
         return;
     }
 
@@ -57,7 +57,7 @@ function SaveButton(){
         console.log("Saved:", res.data);
         navigate("/templates");
     } catch (err) {
-        console.error("Error updating template:", err);
+        toast.error("Error updating template:", err);
     }
     }
 

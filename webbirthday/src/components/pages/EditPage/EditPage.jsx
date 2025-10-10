@@ -9,6 +9,7 @@ import WorkSpace from './WorkSpace';
 import { createTemplate, getTemplateById } from '../../../services/templateService';
 import { useNavigate } from 'react-router-dom';
 import { createCard, getCardById } from '../../../services/cardService';
+import { toast } from 'react-toastify';
 export const PanelContext = createContext();
 
 
@@ -52,11 +53,11 @@ export default function EditPage(){
     if (mode === "cards") {
       getCardById(id)
         .then((res) => setTemplate(res.data))
-        .catch((err) => console.error("Error fetching card:", err));
+        .catch((err) => toast.error("Không thể lấy Cards", err));
     } else if (mode === "templates") {
       getTemplateById(id)
         .then((res) => setTemplate(res.data))
-        .catch((err) => console.error("Error fetching template:", err));
+        .catch((err) => toast.error("Không thể lấy Template", err));
     }
   }, [id, mode]);
 
@@ -68,11 +69,11 @@ export default function EditPage(){
     //Hàm xử lý lưu card
    const handleSave = async () => {
   if (!cardName) {
-    alert("Vui lòng nhập tên thiệp");
+    toast.info("Vui lòng nhập tên");
     return;
   }
   if (!fabricRef.current) {
-    alert("Canvas chưa khởi tạo");
+    toast.info("Canva chưa khởi tạo");
     return;
   }
 
@@ -89,7 +90,7 @@ export default function EditPage(){
         cardDESC: cardDesc,
       });
       console.log("Card saved:", res.data);
-      alert("Đã lưu thiệp (Card)!");
+      toast.info("Thiệp đã lưu thành công");
       navigate("/cards");
     } else {
       // ✅ Lưu thành Template
@@ -100,12 +101,12 @@ export default function EditPage(){
         cardDESC: cardDesc,
       });
       console.log("Template saved:", res.data);
-      alert("Đã lưu Template!");
+      toast.info("Đã lưu Template!");
       navigate("/templates");
     }
   } catch (err) {
     console.error("Save error:", err.response?.data || err.message);
-    alert("Lưu thất bại, xem console để biết chi tiết!");
+    toast.error("Lưu thất bại, xem console để biết chi tiết!");
   }
 };
 
