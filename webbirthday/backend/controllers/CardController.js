@@ -1,4 +1,7 @@
+// controllers/CardController.js
 import Card from "../models/Card.js";
+import { processFabricEditImages } from "../utils/processFabricEdit.js";
+import { uploadFabricJSON } from "../utils/uploadFabricJSON.js";
 
 const CardController = {
   // [GET] /api/cards
@@ -6,7 +9,7 @@ const CardController = {
     try {
       const cards = await Card.find(
         {},
-        "cardName imgURL cardDESC owner createdAt"
+        "cardName imgURL cardDESC owner createdAt fabricEdit"
       );
       res.json(cards);
     } catch (err) {
@@ -32,14 +35,22 @@ const CardController = {
     try {
       const { cardName, imgURL, cardDESC, fabricEdit, owner } = req.body;
 
+      const fabricEditObj =
+        typeof fabricEdit === "string" ? JSON.parse(fabricEdit) : fabricEdit;
+
+      // Upload tất cả ảnh trong canvas
+      const { fabricEdit: processedEdit, imgURLs } =
+        await processFabricEditImages(fabricEditObj);
+
+      // Upload JSON canvas lên Cloudinary
+      const fabricJSONStr = JSON.stringify(processedEdit);
+      const fabricURL = await uploadFabricJSON(fabricJSONStr, cardName);
+
       const newCard = new Card({
         cardName,
-        imgURL,
+        imgURL: imgURLs.length > 0 ? imgURLs : imgURL,
         cardDESC,
-        fabricEdit:
-          typeof fabricEdit === "string"
-            ? fabricEdit
-            : JSON.stringify(fabricEdit), // ✅ stringify nếu cần
+        fabricEdit: fabricURL, // 🔥 lưu URL vào fabricEdit
         owner,
       });
 
@@ -55,16 +66,31 @@ const CardController = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-      const updates = { ...req.body };
+      const { cardName, imgURL, cardDESC, fabricEdit, owner } = req.body;
 
-      // ✅ ép stringify nếu cần
-      if (updates.fabricEdit && typeof updates.fabricEdit !== "string") {
-        updates.fabricEdit = JSON.stringify(updates.fabricEdit);
-      }
+      const fabricEditObj =
+        typeof fabricEdit === "string" ? JSON.parse(fabricEdit) : fabricEdit;
 
-      const updatedCard = await Card.findByIdAndUpdate(id, updates, {
-        new: true,
-      });
+      // Upload tất cả ảnh trong canvas
+      const { fabricEdit: processedEdit, imgURLs } =
+        await processFabricEditImages(fabricEditObj);
+
+      // Upload JSON canvas lên Cloudinary
+      const fabricJSONStr = JSON.stringify(processedEdit);
+      const fabricURL = await uploadFabricJSON(fabricJSONStr, cardName);
+
+      const updatedCard = await Card.findByIdAndUpdate(
+        id,
+        {
+          cardName,
+          imgURL: imgURLs.length > 0 ? imgURLs : imgURL,
+          cardDESC,
+          fabricEdit: fabricURL, // 🔥 lưu URL vào fabricEdit
+          owner,
+        },
+        { new: true }
+      );
+
       if (!updatedCard)
         return res.status(404).json({ message: "Card not found" });
 

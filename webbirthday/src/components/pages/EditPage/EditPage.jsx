@@ -1,4 +1,3 @@
-// EditPage.jsx
 import "./EditPage.css";
 import { useParams, useNavigate } from "react-router-dom";
 import LayerPanel from "./LayerPanel";
@@ -29,7 +28,6 @@ export default function EditPage() {
   const [cardName, setCardName] = useState("");
   const [cardDesc, setCardDesc] = useState("");
   const [isCard, setIsCard] = useState(false);
-
   const [template, setTemplate] = useState(null);
   const [closePanels, setClosePanels] = useState(false);
   const [layerSelected, setLayerSelected] = useState("chưa chọn");
@@ -42,10 +40,14 @@ export default function EditPage() {
 
   const getSizeToolBox = (toolsNum) => `w-[${toolsNum * 64}px]`;
 
-  // Load template/card theo id
   useEffect(() => {
     if (id === "blank") {
-      setTemplate({ fabricEdit: null, name: "Blank Template", imgURL: null });
+      setTemplate({
+        fabricEdit: null,
+        fabricURL: null,
+        name: "Blank Template",
+        imgURL: null,
+      });
       return;
     }
 
@@ -54,6 +56,9 @@ export default function EditPage() {
         const res =
           mode === "cards" ? await getCardById(id) : await getTemplateById(id);
         setTemplate(res.data);
+        setCardName(res.data?.name || res.data?.cardName || "");
+        setCardDesc(res.data?.cardDESC || "");
+        setIsCard(mode === "cards");
       } catch (err) {
         console.error(err);
         toast.error(`Không thể lấy dữ liệu ${mode}`);
@@ -64,82 +69,48 @@ export default function EditPage() {
 
   if (!template) return <div>Loading template...</div>;
 
-  // Lưu hoặc cập nhật template/card
-  const handleSave = async () => {
+  const handleCreateNew = async () => {
     if (!cardName) return toast.info("Vui lòng nhập tên");
     if (!fabricRef.current) return toast.info("Canvas chưa khởi tạo");
 
-    const json = fabricRef.current.toJSON();
-    const fabricEdit = JSON.stringify(json);
-
-    // Tạo thumbnail chỉ khi tạo mới
-    let uploadedThumb = template.imgURL || null;
-    if (id === "blank" || !template.imgURL) {
-      try {
-        const thumbnail = fabricRef.current.toDataURL({
-          format: "png",
-          quality: 0.8,
-        });
-        const res = await uploadBase64Image(thumbnail);
-        uploadedThumb = res.url;
-      } catch (err) {
-        console.warn("Upload thumbnail thất bại:", err);
-      }
+    const fabricJSON = JSON.stringify(fabricRef.current.toJSON());
+    let uploadedThumb = null;
+    try {
+      const thumbnail = fabricRef.current.toDataURL({
+        format: "png",
+        quality: 0.8,
+      });
+      const res = await uploadBase64Image(thumbnail);
+      uploadedThumb = res.url;
+    } catch (err) {
+      console.warn("Upload thumbnail thất bại:", err);
     }
 
     try {
       if (isCard) {
-        if (id === "blank" || !template.imgURL) {
-          const res = await createCard({
-            cardName,
-            owner: null,
-            fabricEdit,
-            cardDESC: cardDesc,
-            imgURL: uploadedThumb,
-          });
-          toast.success("Card đã lưu thành công!");
-          navigate("/cards");
-          console.log("Card created:", res.data);
-        } else {
-          const res = await updateCard(id, {
-            cardName,
-            owner: null,
-            fabricEdit,
-            cardDESC: cardDesc,
-            imgURL: template.imgURL, // giữ nguyên thumbnail
-          });
-          toast.success("Card đã cập nhật!");
-          navigate("/cards");
-          console.log("Card updated:", res.data);
-        }
+        await createCard({
+          cardName,
+          owner: null,
+          fabricEdit: fabricJSON,
+          cardDESC: cardDesc,
+          imgURL: uploadedThumb,
+        });
+        toast.success("Card đã lưu thành công!");
+        navigate("/cards");
       } else {
-        if (id === "blank" || !template.imgURL) {
-          const res = await createTemplate({
-            name: cardName,
-            owner: null,
-            fabricEdit,
-            cardDESC: cardDesc,
-            imgURL: uploadedThumb,
-          });
-          toast.success("Template đã lưu thành công!");
-          navigate("/templates");
-          console.log("Template created:", res.data);
-        } else {
-          const res = await updateTemplate(id, {
-            name: cardName,
-            owner: null,
-            fabricEdit,
-            cardDESC: cardDesc,
-            imgURL: template.imgURL, // giữ nguyên thumbnail
-          });
-          toast.success("Template đã cập nhật!");
-          navigate("/templates");
-          console.log("Template updated:", res.data);
-        }
+        await createTemplate({
+          name: cardName,
+          owner: null,
+          fabricEdit: fabricJSON,
+          cardDESC: cardDesc,
+          imgURL: uploadedThumb,
+        });
+        toast.success("Template đã lưu thành công!");
+        navigate("/templates");
       }
     } catch (err) {
-      console.error("Save/Update error:", err.response?.data || err.message);
-      toast.error("Lưu thất bại, xem console!");
+      console.error("Create error:", err);
+      toast.error("Tạo mới thất bại, xem console!");
     }
   };
 
@@ -174,7 +145,7 @@ export default function EditPage() {
             </label>
             <div
               className="absolute my-2 right-[10%] w-[64px] h-[48px] bg-amber-300 font-bold flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black"
-              onClick={handleSave}
+              onClick={handleCreateNew}
             >
               Lưu
             </div>
@@ -205,7 +176,10 @@ export default function EditPage() {
         }}
       >
         <div id="canvasWorkSpace" className="absolute h-screen w-screen">
-          <WorkSpace fabricData={template.fabricEdit} />
+          <WorkSpace
+            fabricData={template.fabricEdit}
+            fabricURL={template.fabricURL}
+          />
         </div>
 
         <div id="layerPanel" className="h-full w-[15%]">

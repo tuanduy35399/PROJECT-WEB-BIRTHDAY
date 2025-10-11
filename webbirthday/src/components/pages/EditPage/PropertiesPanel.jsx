@@ -1,12 +1,14 @@
-// PropertiesPanel.jsx
 import "./EditPage.css";
 import { useState, useContext } from "react";
 import { PanelContext } from "./EditPage";
 import { FaSave as SaveIcon } from "react-icons/fa";
 import { FaFileExport as ExportIcon } from "react-icons/fa6";
 import { ChromePicker } from "react-color";
-import { updateTemplate } from "../../../services/templateService";
-import { updateCard } from "../../../services/cardService";
+import {
+  createTemplate,
+  updateTemplate,
+} from "../../../services/templateService";
+import { createCard, updateCard } from "../../../services/cardService";
 import { BsCardList as CardIcon } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -38,71 +40,30 @@ function SaveButton() {
       return;
     }
 
-    const json = fabricRef.current.toJSON();
-    const fabricEdit = JSON.stringify(json);
-
-    let uploadedThumb = template?.imgURL || null;
-
-    // Tạo thumbnail **chỉ khi tạo mới**
-    if (id === "blank" || !template?.imgURL) {
-      const thumbnail = fabricRef.current.toDataURL({
-        format: "png",
-        quality: 0.8,
-      });
-      try {
-        const res = await uploadBase64Image(thumbnail);
-        uploadedThumb = res.url;
-      } catch (err) {
-        console.warn("Upload thumbnail thất bại:", err);
-      }
-    }
+    const fabricJSON = JSON.stringify(fabricRef.current.toJSON());
 
     try {
       if (mode === "templates") {
-        if (id === "blank" || !template?.imgURL) {
-          // Tạo mới template
-          const res = await updateTemplate(id, {
-            name: template?.name || "My Template",
-            owner: null,
-            fabricEdit,
-            imgURL: uploadedThumb,
-          });
-          toast.success("Template đã lưu!");
-          console.log("Template created:", res.data);
-        } else {
-          // Update template, giữ nguyên thumbnail
-          const res = await updateTemplate(id, {
-            name: template?.name || "My Template",
-            owner: null,
-            fabricEdit,
-            imgURL: template.imgURL,
-          });
-          toast.success("Template đã cập nhật!");
-          console.log("Template updated:", res.data);
-        }
+        // Update template
+        const res = await updateTemplate(id, {
+          name: template?.name || "My Template",
+          owner: null,
+          fabricEdit: fabricJSON,
+          imgURL: template.imgURL,
+        });
+        toast.success("Template đã cập nhật!");
         navigate("/templates");
       }
 
       if (mode === "cards") {
-        if (id === "blank" || !template?.imgURL) {
-          const res = await updateCard(id, {
-            cardName: template?.cardName || "My Card",
-            owner: null,
-            fabricEdit,
-            imgURL: uploadedThumb,
-          });
-          toast.success("Card đã lưu!");
-          console.log("Card created:", res.data);
-        } else {
-          const res = await updateCard(id, {
-            cardName: template?.cardName || "My Card",
-            owner: null,
-            fabricEdit,
-            imgURL: template.imgURL,
-          });
-          toast.success("Card đã cập nhật!");
-          console.log("Card updated:", res.data);
-        }
+        // Update card
+        const res = await updateCard(id, {
+          cardName: template?.cardName || "My Card",
+          owner: null,
+          fabricEdit: fabricJSON,
+          imgURL: template.imgURL,
+        });
+        toast.success("Card đã cập nhật!");
         navigate("/cards");
       }
     } catch (err) {

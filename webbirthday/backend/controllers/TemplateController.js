@@ -1,5 +1,7 @@
+// controllers/TemplateController.js
 import Template from "../models/Template.js";
 import { processFabricEditImages } from "../utils/processFabricEdit.js";
+import { uploadFabricJSON } from "../utils/uploadFabricJSON.js";
 
 const TemplateController = {
   // [POST] /api/templates
@@ -7,19 +9,22 @@ const TemplateController = {
     try {
       const { name, owner, imgURL, fabricEdit } = req.body;
 
-      // ✅ Nếu có cần xử lý ảnh bên trong fabricEdit (chỉ khi dùng ở frontend)
       const fabricEditObj =
         typeof fabricEdit === "string" ? JSON.parse(fabricEdit) : fabricEdit;
 
+      // Upload tất cả ảnh trong canvas
       const { fabricEdit: processedEdit, imgURLs } =
         await processFabricEditImages(fabricEditObj);
 
-      // ✅ Lưu lại dạng string để không bị lỗi cast
+      // Upload JSON canvas lên Cloudinary
+      const fabricJSONStr = JSON.stringify(processedEdit);
+      const fabricURL = await uploadFabricJSON(fabricJSONStr, name);
+
       const newTemplate = new Template({
         name,
         owner,
         imgURL: imgURLs.length > 0 ? imgURLs : imgURL,
-        fabricEdit: JSON.stringify(processedEdit), // 🔥 stringify trước khi lưu
+        fabricEdit: fabricURL, // 🔥 lưu URL vào fabricEdit
       });
 
       await newTemplate.save();
@@ -65,7 +70,7 @@ const TemplateController = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-      let { name, owner, imgURL, fabricEdit } = req.body;
+      const { name, owner, imgURL, fabricEdit } = req.body;
 
       const fabricEditObj =
         typeof fabricEdit === "string" ? JSON.parse(fabricEdit) : fabricEdit;
@@ -73,13 +78,17 @@ const TemplateController = {
       const { fabricEdit: processedEdit, imgURLs } =
         await processFabricEditImages(fabricEditObj);
 
+      // Upload JSON canvas lên Cloudinary
+      const fabricJSONStr = JSON.stringify(processedEdit);
+      const fabricURL = await uploadFabricJSON(fabricJSONStr, name);
+
       const updatedTemplate = await Template.findByIdAndUpdate(
         id,
         {
           name,
           owner,
-          fabricEdit: JSON.stringify(processedEdit), // 🔥 stringify ở đây nữa
           imgURL: imgURLs.length > 0 ? imgURLs : imgURL,
+          fabricEdit: fabricURL, // 🔥 lưu URL vào fabricEdit
         },
         { new: true }
       );
