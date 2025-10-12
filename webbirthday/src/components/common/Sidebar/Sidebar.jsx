@@ -3,17 +3,29 @@ import { NavLink } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { TbCards } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
-import { MdEdit } from "react-icons/md";
 import { BiCategory } from "react-icons/bi";
 import styles from "./Sidebar.module.css";
+import { useAuth } from "../../../context/AuthContext"; // Import useAuth
 
-const menuItems = [
-  { to: "/users", icon: <CgProfile color="black" />, label: "Cá nhân" },
+const allMenuItems = [
+  { to: "/users", icon: <CgProfile color="black" />, label: "Quản lý User" },
   { to: "/cards", icon: <TbCards color="black" />, label: "Quản lý thiệp" },
   { to: "/templates", icon: <BiCategory color="black" />, label: "Quản lý Template" },
 ];
 
 const Sidebar = ({ open, setOpen }) => {
+  const { user } = useAuth(); // Lấy thông tin user
+
+  //Lọc ra các menu item được phép hiển thị
+  const visibleMenuItems = allMenuItems.filter(item => {
+    // User và Admin đều thấy "Quản lý thiệp"
+    if (item.to === "/cards") return true;
+    // Chỉ Admin mới thấy các mục còn lại
+    if (user && user.isAdmin) return true;
+    
+    return false;
+  });
+
   return (
     <div className={`${styles.sidebar} ${open ? styles.sidebarOpen : styles.sidebarCollapsed}`}>
       {/* Toggle */}
@@ -28,7 +40,8 @@ const Sidebar = ({ open, setOpen }) => {
 
       {/* Menu items */}
       <ul className={styles.menuList}>
-        {menuItems.map(({ to, icon, label }) => (
+        {/*Render danh sách đã được lọc */}
+        {visibleMenuItems.map(({ to, icon, label }) => (
           <li key={to}>
             <NavLink
               to={to}

@@ -1,8 +1,13 @@
 import styles from "./Login.module.css";
 import { useState } from "react";
 import { loginUser } from "../../services/userService";
+import { useAuth } from "../../context/AuthContext"; // Import hook useAuth
+import { useNavigate } from "react-router-dom"; // Import hook để điều hướng
 
-export default function Login({ onLogin }) {
+export default function Login() { // Xóa prop "onLogin" không cần thiết
+  const { login } = useAuth(); //Lấy hàm "login" từ AuthContext
+  const navigate = useNavigate(); // Khởi tạo hàm điều hướng
+
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [submit, setSubmit] = useState(false);
@@ -13,14 +18,25 @@ export default function Login({ onLogin }) {
     setSubmit(true);
     setErrMsg("");
 
+    // Kiểm tra validation cơ bản trước khi gọi API
+    if (inputEmail === "" || inputPassword.trim().length < 6) {
+        return;
+    }
+
     try {
       const res = await loginUser({
         username: inputEmail,
         password: inputPassword,
       });
 
-      localStorage.setItem("token", res.data.token);
-      onLogin();
+      // Gọi hàm login từ context để cập nhật toàn bộ ứng dụng
+      // Backend của bạn NÊN trả về cả thông tin user (gồm role)
+      // Ví dụ: res.data = { token: "...", user: { _id: "...", username: "...", role: "admin" } }
+      login(res.data.user); 
+
+      // Sau khi đăng nhập thành công, điều hướng đến trang /cards
+      navigate("/cards", { replace: true });
+
     } catch (err) {
       console.error(err);
       setErrMsg(err.response?.data?.message || "Đăng nhập thất bại, thử lại!");
@@ -32,6 +48,7 @@ export default function Login({ onLogin }) {
 
   return (
     <div className={styles.loginContainer}>
+      {/* ... Phần JSX của bạn giữ nguyên ... */}
       <div className={styles.layoutLogin}>
         <div className={styles.header}>
           <div className={styles.circle}></div>

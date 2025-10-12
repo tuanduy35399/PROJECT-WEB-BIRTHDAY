@@ -2,7 +2,7 @@ import { useEffect, useRef, useContext } from "react";
 import { fabric } from "fabric";
 import { PanelContext } from "./EditPage";
 
-export default function WorkSpace({ fabricData, fabricURL }) {
+export default function WorkSpace({ fabricData, viewOnly }) {
   const canvasRef = useRef(null);
   const { fabricRef, toolSelected, drawBrush } = useContext(PanelContext);
 
@@ -16,44 +16,50 @@ export default function WorkSpace({ fabricData, fabricURL }) {
     });
     fabricRef.current = canvas;
 
-    const loadFabricJSON = (jsonData) => {
-      canvas.loadFromJSON(jsonData, () => {
-        canvas.renderAll();
-      });
-    };
-
+    //  SỬA LỖI: Logic tải dữ liệu được làm lại để ổn định hơn
     if (fabricData) {
-      try {
-        // Kiểm tra xem fabricData có phải JSON hay URL
-        const isJSON = fabricData.trim().startsWith("{");
-        if (isJSON) {
-          const json = JSON.parse(fabricData);
-          loadFabricJSON(json);
-        } else {
-          // Nếu là URL, fetch JSON từ server
-          fetch(fabricData)
-            .then((res) => res.json())
-            .then((jsonData) => loadFabricJSON(jsonData))
-            .catch((err) => console.error("Error fetching fabric JSON:", err));
+      let jsonData;
+      // Nếu dữ liệu là một chuỗi, phân tích nó thành JSON
+      if (typeof fabricData === "string") {
+        try {
+          jsonData = JSON.parse(fabricData);
+        } catch (e) {
+          console.error("Lỗi phân tích dữ liệu bản vẽ (JSON):", e);
+          // Không làm gì thêm nếu dữ liệu lỗi
         }
-      } catch (err) {
-        console.error("Error parsing fabricData:", err);
+      } 
+      // Nếu dữ liệu đã là một đối tượng, sử dụng trực tiếp
+      else if (typeof fabricData === "object") {
+        jsonData = fabricData;
       }
-    } else if (fabricURL) {
-      fetch(fabricURL)
-        .then((res) => res.json())
-        .then((jsonData) => loadFabricJSON(jsonData))
-        .catch((err) => console.error("Error fetching fabric JSON:", err));
+
+      // Nếu có jsonData hợp lệ, tải nó vào canvas
+      if (jsonData) {
+        canvas.loadFromJSON(jsonData, () => {
+          canvas.renderAll();
+          // Nếu ở chế độ chỉ xem, vô hiệu hóa tương tác
+          if(viewOnly) {
+            canvas.selection = false;
+            canvas.forEachObject(obj => {
+              obj.selectable = false;
+              obj.evented = false;
+            });
+          }
+        });
+      }
     }
 
     return () => {
-      canvas.dispose();
-      fabricRef.current = null;
+      if (fabricRef.current) {
+        fabricRef.current.dispose();
+        fabricRef.current = null;
+      }
     };
-  }, [fabricData, fabricURL, fabricRef]);
+  }, [fabricData, fabricRef, viewOnly]);
 
+  // useEffect cho các công cụ vẫn giữ nguyên
   useEffect(() => {
-    if (!fabricRef.current) return;
+    if (!fabricRef.current || viewOnly) return; // Không kích hoạt tool nếu ở chế độ xem
     const canvas = fabricRef.current;
 
     function handleMouseDown(opt) {
@@ -88,7 +94,7 @@ export default function WorkSpace({ fabricData, fabricURL }) {
       canvas.off("mouse:down", handleMouseDown);
       canvas.off("mouse:up", handleMouseUp);
     };
-  }, [toolSelected, drawBrush, fabricRef]);
+  }, [toolSelected, drawBrush, fabricRef, viewOnly]);
 
   return (
     <div className="w-full h-full">
