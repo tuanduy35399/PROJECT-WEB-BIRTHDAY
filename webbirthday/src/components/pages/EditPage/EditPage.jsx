@@ -22,10 +22,21 @@ import { uploadBase64Image } from "../../../services/uploadServices.js";
 export const PanelContext = createContext();
 
 export default function EditPage({ viewOnly = false }) {
+  const [textDetails, setTextDetails] = useState({
+  text: "Nhập chữ ở đây",
+  fill: "#000000",
+  fontSize: 24,
+  fontWeight: "normal",
+  fontStyle: "normal",
+  underline: false,
+});
   const navigate = useNavigate();
   const { id, mode: routeMode } = useParams();
   const mode = viewOnly ? 'cards' : routeMode;
-
+  const [imageDetails, setImageDetails] = useState({
+  url: "",
+  scale: 1,
+});
   const [template, setTemplate] = useState(null);
   const [toggleSaveCard, setToggleSaveCard] = useState(false);
   const [cardName, setCardName] = useState("");
@@ -37,6 +48,7 @@ export default function EditPage({ viewOnly = false }) {
   const [toolNum, setToolNum] = useState(6);
   const [drawingMode, setDrawingMode] = useState(false);
   const [drawBrush, setDrawBrush] = useState({ color: "blue", width: 15 });
+  const [rectDetails, setRectDetails] = useState({fill: "white", stroke:"black", strokeWidth:2});
   const fabricRef = useRef(null);
 
   const getSizeToolBox = (toolsNum) => `w-[${toolsNum * 64}px]`;
@@ -96,7 +108,7 @@ export default function EditPage({ viewOnly = false }) {
           toggleSaveCard, setToggleSaveCard, fabricRef, drawBrush, setDrawBrush,
           closePanels, setClosePanels, layerSelected, setLayerSelected,
           toolSelected, setToolSelected, toolNum, setToolNum, drawingMode,
-          setDrawingMode, template, id, mode,
+          setDrawingMode, template, id, mode,rectDetails, setRectDetails,imageDetails, setImageDetails,textDetails, setTextDetails,
         }}
       >
         <div id="canvasWorkSpace" className="absolute h-screen w-screen">
