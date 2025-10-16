@@ -1,25 +1,23 @@
+/* Container for the bottom section */
 .bottomSection {
     flex: 1;
     max-height: 560px;
     width: 90%;
-    /* background-color: #bdc3c7; */
-    /* padding-top: 10px; */
     padding-bottom: 30px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    /* overflow: hidden; */
-    /* chặn tràn xuống ngoài */
 }
 
+/* Section title */
 .sectionTitle {
     font-size: 24px;
     margin-bottom: 15px;
     color: black;
 }
 
+/* Grid for all cards */
 .gridContainer {
-    /* height: 100vh; */
     flex: 1;
     display: grid;
     grid-template-columns: repeat(5, auto);
@@ -27,12 +25,11 @@
     gap: 20px;
     overflow-y: auto;
     width: 100%;
-    /* chỉ scroll trong khung này */
     padding: 10px;
-    
     margin-left: 20px;
 }
 
+/* Each card container */
 .rectCard {
     width: 260px;
     height: 350px;
@@ -41,11 +38,16 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    /* crop ảnh */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
 }
 
+/* Card hover effect */
+.rectCard:hover {
+    transform: scale(1.05);
+}
+
+/* Top part of card (image) */
 .cardTop {
     flex: 1;
     overflow: hidden;
@@ -57,11 +59,13 @@
     object-fit: cover;
 }
 
+/* Divider between top and bottom */
 .divider {
     height: 2px;
     background-color: #bdc3c7;
 }
 
+/* Bottom part of card (text + button) */
 .cardBottom {
     flex: 1;
     padding: 8px;
@@ -76,14 +80,53 @@
     margin: 2px 0;
 }
 
-.rectCard:hover {
-    transform: scale(1.05);
-}
-
+/* Message when no cards exist */
 .noCardsMessage {
     grid-column: 1 / -1;
     text-align: center;
     padding: 40px;
     font-size: 16px;
     color: #666;
+}
+
+/* Editable button */
+.editableBtn {
+    margin-top: 8px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+/* Editable state - not complete yet (isEditable = true) */
+.notComplete {
+    background-color: #f59e0b;
+    /* amber/orange */
+}
+
+.notComplete:hover {
+    background-color: #d97706;
+    transform: scale(1.05);
+}
+
+/* Completed state (isEditable = false) */
+.completed {
+    background-color: #10b981;
+    /* green */
+}
+
+.completed:hover {
+    background-color: #059669;
+    transform: scale(1.05);
+}
+
+/* Completed card for normal users (non-editable) */
+.completedCard {
+    background-color: #f3f4f6;
+    /* light gray */
+    cursor: default;
 }
