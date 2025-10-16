@@ -19,6 +19,7 @@
     "fabric": "^5.5.2",
     "mongoose": "^8.18.1",
     "multer": "^2.0.2",
+    "nprogress": "^0.2.0",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",
     "react-color": "^2.19.3",

@@ -15,12 +15,57 @@ import { toast } from "react-toastify";
 import { uploadBase64Image } from "../../../services/uploadServices.js";
 
 function ExportButton() {
+  const { fabricRef } = useContext(PanelContext);
+
+  const handleExport = async (e) => {
+    // Ngăn hành vi mặc định (nếu là button/a)
+    e?.preventDefault?.();
+
+    if (!fabricRef.current) {
+      toast.error("Canvas chưa khởi tạo");
+      return;
+    }
+
+    try {
+      const canvas = fabricRef.current;
+      const base64 = canvas.toDataURL({ format: "png" });
+
+      // Upload lên server
+      const { url } = await uploadBase64Image(base64);
+
+      // Mở tab mới hiển thị ảnh
+      const newTab = window.open("", "_blank"); // mở tab rỗng
+      if (newTab) {
+        newTab.document.write(`
+          <html>
+            <head><title>Preview</title></head>
+            <body style="margin:0; display:flex; justify-content:center; align-items:center; height:100vh; background:#eee;">
+              <img src="${url}" style="max-width:100%; max-height:100%;" />
+            </body>
+          </html>
+        `);
+        newTab.document.close();
+      } else {
+        toast.warn("Trình duyệt chặn popup, hãy bật cho phép mở tab mới.");
+      }
+
+      toast.success("Export thành công! Ảnh mở tab mới.");
+    } catch (err) {
+      console.error("Export error:", err);
+      toast.error("Export thất bại, xem console!");
+    }
+  };
+
   return (
-    <div>
+    <div onClick={handleExport}>
       <ExportIcon className="panelButton" />
     </div>
   );
 }
+
+
+
+
 
 function CardButton() {
   return (

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styles from "./BottomSection.module.css";
 import { getCards, updateCard } from "../../../../services/cardService";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../../context/AuthContext";
 
 const BottomSection = () => {
   const [cardsData, setCardsData] = useState([]);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) return;
@@ -19,7 +20,6 @@ const BottomSection = () => {
         if (user.isAdmin) {
           displayCards = res.data;
         } else {
-          // Non-admin chỉ thấy card đã hoàn chỉnh
           displayCards = res.data.filter(
             (card) => card.owner?._id === user._id && !card.isEditable
           );
@@ -76,6 +76,7 @@ const BottomSection = () => {
             }`}
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation(); // Ngăn event click bubble lên div cha
               toggleEditable(card._id, !card.isEditable);
             }}
           >
@@ -85,6 +86,14 @@ const BottomSection = () => {
       </div>
     </>
   );
+
+  const handleCardClick = (card) => {
+    if (!user.isAdmin) return; // Non-admin không click
+    if (!card.isEditable) return; // Admin không click card đã hoàn chỉnh
+
+    // Admin click card chưa hoàn chỉnh → redirect sang trang edit
+    navigate(`/edit/cards/${card._id}`);
+  };
 
   return (
     <div className={styles.bottomSection}>
@@ -98,14 +107,7 @@ const BottomSection = () => {
           </p>
         ) : (
           cardsData.map((card) => {
-            const isLocked = !card.isEditable; // card đã hoàn chỉnh
-
-            const handleCardClick = () => {
-              if (isLocked && !user.isAdmin) return; // non-admin không click
-              if (isLocked && user.isAdmin) return; // admin click card đã hoàn chỉnh → không redirect
-              // Nếu card chưa hoàn chỉnh, admin click → redirect
-              // Trường hợp redirect bạn có thể dùng Link hoặc navigate
-            };
+            const isLocked = !card.isEditable; // dùng trực tiếp để quyết định UI
 
             return (
               <div
@@ -114,10 +116,10 @@ const BottomSection = () => {
                   isLocked ? styles.completedCard : ""
                 }`}
                 style={{
-                  opacity: isLocked && !card.isEditable ? 0.5 : 1,
+                  opacity: isLocked ? 0.5 : 1,
                   cursor: isLocked ? "not-allowed" : "pointer",
                 }}
-                onClick={handleCardClick}
+                onClick={() => handleCardClick(card)}
               >
                 <CardContent card={card} />
               </div>
