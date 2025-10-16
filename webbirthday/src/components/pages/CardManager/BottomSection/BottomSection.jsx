@@ -88,11 +88,14 @@ const BottomSection = () => {
   );
 
   const handleCardClick = (card) => {
-    if (!user.isAdmin) return; // Non-admin không click
-    if (!card.isEditable) return; // Admin không click card đã hoàn chỉnh
-
-    // Admin click card chưa hoàn chỉnh → redirect sang trang edit
-    navigate(`/edit/cards/${card._id}`);
+    // User thường vẫn có thể click vào card đã hoàn thiện
+    if (user.isAdmin) {
+      if (!card.isEditable) return; // Admin chỉ click card chưa hoàn thiện
+      navigate(`/edit/cards/${card._id}`);
+    } else {
+      // User thường → redirect sang trang view-only
+      navigate(`/view/cards/${card._id}`);
+    }
   };
 
   return (
@@ -107,7 +110,7 @@ const BottomSection = () => {
           </p>
         ) : (
           cardsData.map((card) => {
-            const isLocked = !card.isEditable; // dùng trực tiếp để quyết định UI
+            const isLocked = !card.isEditable && user.isAdmin;// dùng trực tiếp để quyết định UI
 
             return (
               <div

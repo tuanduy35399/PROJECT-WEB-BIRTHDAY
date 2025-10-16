@@ -40,7 +40,7 @@ function MainApp() {
         </Route>
 
         <Route path="/edit/:mode/:id" element={<EditPage />} />
-        <Route path="/view/card/:id" element={<EditPage viewOnly={true} />} />
+        <Route path="/view/cards/:id" element={<EditPage viewOnly={true} />} />
       </Route>
 
       <Route path="/" element={<Navigate to="/cards" replace />} />
