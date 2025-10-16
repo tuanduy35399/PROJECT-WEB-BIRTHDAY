@@ -1,27 +1,25 @@
 import styles from "./Login.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { loginUser } from "../../services/userService";
-import { useAuth } from "../../context/AuthContext"; // Import hook useAuth
-import { useNavigate } from "react-router-dom"; // Import hook để điều hướng
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() { // Xóa prop "onLogin" không cần thiết
-  const { login } = useAuth(); //Lấy hàm "login" từ AuthContext
-  const navigate = useNavigate(); // Khởi tạo hàm điều hướng
+export default function Login() {
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
 
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [submit, setSubmit] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+  const [submitted, setSubmitted] = useState(false); // đánh dấu đã submit thành công
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmit(true);
     setErrMsg("");
 
-    // Kiểm tra validation cơ bản trước khi gọi API
-    if (inputEmail === "" || inputPassword.trim().length < 6) {
-        return;
-    }
+    if (!inputEmail || inputPassword.trim().length < 6) return;
 
     try {
       const res = await loginUser({
@@ -29,26 +27,29 @@ export default function Login() { // Xóa prop "onLogin" không cần thiết
         password: inputPassword,
       });
 
-      // Gọi hàm login từ context để cập nhật toàn bộ ứng dụng
-      // Backend của bạn NÊN trả về cả thông tin user (gồm role)
-      // Ví dụ: res.data = { token: "...", user: { _id: "...", username: "...", role: "admin" } }
-      login(res.data.user, res.data.token); 
+      // Cập nhật context và localStorage
+      login(res.data.user, res.data.token);
 
-      // Sau khi đăng nhập thành công, điều hướng đến trang /cards
+      // Navigate ngay lập tức
       navigate("/cards", { replace: true });
-
     } catch (err) {
       console.error(err);
       setErrMsg(err.response?.data?.message || "Đăng nhập thất bại, thử lại!");
     }
   };
 
+  // Điều hướng khi user đã tồn tại trong context
+  useEffect(() => {
+    if (submitted && user) {
+      navigate("/cards", { replace: true });
+    }
+  }, [submitted, user, navigate]);
+
   const emailInvalid = submit && inputEmail === "";
   const passwordInvalid = submit && inputPassword.trim().length < 6;
 
   return (
     <div className={styles.loginContainer}>
-      {/* ... Phần JSX của bạn giữ nguyên ... */}
       <div className={styles.layoutLogin}>
         <div className={styles.header}>
           <div className={styles.circle}></div>
@@ -66,7 +67,7 @@ export default function Login() { // Xóa prop "onLogin" không cần thiết
             }`}
           />
           {emailInvalid && (
-            <p style={{ color: "red", margin: "0px" }}>Username là bắt buộc</p>
+            <p style={{ color: "red", margin: 0 }}>Username là bắt buộc</p>
           )}
 
           <input
@@ -79,12 +80,13 @@ export default function Login() { // Xóa prop "onLogin" không cần thiết
             }`}
           />
           {passwordInvalid && (
-            <p style={{ color: "red", margin: "0px" }}>
+            <p style={{ color: "red", margin: 0 }}>
               Password phải chứa ít nhất 6 ký tự
             </p>
           )}
 
           {errMsg && <p style={{ color: "red" }}>{errMsg}</p>}
+
           <button type="submit" className={styles.submitButton}>
             Đăng nhập
           </button>

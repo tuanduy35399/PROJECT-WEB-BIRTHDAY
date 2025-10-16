@@ -65,3 +65,18 @@
     padding: 6px 12px;
     cursor: pointer;
 }
+
+.ownedCardItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.removeCardBtn {
+    background: transparent;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 16px;
+}

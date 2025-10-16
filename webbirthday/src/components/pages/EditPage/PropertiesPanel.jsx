@@ -166,214 +166,273 @@ export default function PropertiesPanel() {
           <p>Đang chọn layer: {layerSelected}</p>
           <p>Tool đang chọn: {toolSelected}</p>
           {toolSelected === "rect" && (
-  <div className="flex flex-col gap-y-2">
-    <p>Màu nền (fill):</p>
-    <ChromePicker
-      className="mx-auto"
-      color={rectDetails.fill}
-      onChange={(color) =>
-        setRectDetails((prev) => ({ ...prev, fill: color.hex }))
-      }
-    />
+            <div className="flex flex-col gap-y-2">
+              <p>Màu nền (fill):</p>
+              <ChromePicker
+                className="mx-auto"
+                color={rectDetails.fill}
+                onChange={(color) =>
+                  setRectDetails((prev) => ({ ...prev, fill: color.hex }))
+                }
+              />
 
-    <p>Màu viền (stroke):</p>
-    <ChromePicker
-      className="mx-auto"
-      color={rectDetails.stroke}
-      onChange={(color) =>
-        setRectDetails((prev) => ({ ...prev, stroke: color.hex }))
-      }
-    />
+              <p>Màu viền (stroke):</p>
+              <ChromePicker
+                className="mx-auto"
+                color={rectDetails.stroke}
+                onChange={(color) =>
+                  setRectDetails((prev) => ({ ...prev, stroke: color.hex }))
+                }
+              />
 
-    <p>Độ dày viền:</p>
-    <input
-      type="number"
-      min="1"
-      max="20"
-      value={rectDetails.strokeWidth}
-      onChange={(e) =>
-        setRectDetails((prev) => ({
-          ...prev,
-          strokeWidth: parseInt(e.target.value) || 1,
-        }))
-      }
-    />
+              <p>Độ dày viền:</p>
+              <input
+                type="number"
+                min="1"
+                max="20"
+                value={rectDetails.strokeWidth}
+                onChange={(e) =>
+                  setRectDetails((prev) => ({
+                    ...prev,
+                    strokeWidth: parseInt(e.target.value) || 1,
+                  }))
+                }
+              />
 
-    <div className="flex items-center justify-center">
-      <div
-        className="w-[64px] h-[48px] bg-blue-300 flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black"
-        onClick={() => {
-  const canvas = fabricRef.current;
-  if (canvas) {
-    const activeObject = canvas.getActiveObject();
-    if (activeObject && activeObject.type === "rect") {
-      activeObject.set({
-        fill: rectDetails.fill,
-        stroke: rectDetails.stroke,
-        strokeWidth: rectDetails.strokeWidth,
-      });
-      canvas.requestRenderAll();
-    }
-  }
+              <div className="flex items-center justify-center">
+                <div
+                  className="w-[64px] h-[48px] bg-blue-300 flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black"
+                  onClick={() => {
+                    const canvas = fabricRef.current;
+                    if (canvas) {
+                      const activeObject = canvas.getActiveObject();
+                      if (activeObject && activeObject.type === "rect") {
+                        activeObject.set({
+                          fill: rectDetails.fill,
+                          stroke: rectDetails.stroke,
+                          strokeWidth: rectDetails.strokeWidth,
+                        });
+                        canvas.requestRenderAll();
+                      }
+                    }
 
-  // ✅ Cập nhật giá trị mặc định cho các hình chữ nhật tạo mới sau này
-  setRectDetails((prev) => ({
-    ...prev,
-    fill: rectDetails.fill,
-    stroke: rectDetails.stroke,
-    strokeWidth: rectDetails.strokeWidth,
-  }));
+                    // ✅ Cập nhật giá trị mặc định cho các hình chữ nhật tạo mới sau này
+                    setRectDetails((prev) => ({
+                      ...prev,
+                      fill: rectDetails.fill,
+                      stroke: rectDetails.stroke,
+                      strokeWidth: rectDetails.strokeWidth,
+                    }));
 
-  toast.success("Đã áp dụng và lưu làm mặc định cho hình chữ nhật mới!");
-}}
+                    toast.success(
+                      "Đã áp dụng và lưu làm mặc định cho hình chữ nhật mới!"
+                    );
+                  }}
+                >
+                  Áp dụng
+                </div>
+              </div>
+            </div>
+          )}
+          {toolSelected === "text" && (
+            <div className="flex flex-col gap-y-2">
+              <p>Nội dung văn bản:</p>
+              <input
+                type="text"
+                className="border border-gray-300 rounded px-2 py-1"
+                value={textDetails.text}
+                onChange={(e) =>
+                  setTextDetails((prev) => ({ ...prev, text: e.target.value }))
+                }
+              />
 
+              <p>Màu chữ:</p>
+              <ChromePicker
+                className="mx-auto"
+                color={textDetails.fill}
+                onChange={(color) =>
+                  setTextDetails((prev) => ({ ...prev, fill: color.hex }))
+                }
+              />
 
-      >
-        Áp dụng
-      </div>
-    </div>
-  </div>
-)}
-{toolSelected === "text" && (
-  <div className="flex flex-col gap-y-2">
-    <p>Nội dung văn bản:</p>
-    <input
-      type="text"
-      className="border border-gray-300 rounded px-2 py-1"
-      value={textDetails.text}
-      onChange={(e) =>
-        setTextDetails((prev) => ({ ...prev, text: e.target.value }))
-      }
-    />
+              <p>Cỡ chữ:</p>
+              <input
+                type="number"
+                min="8"
+                max="128"
+                className="border border-gray-300 rounded px-2 py-1"
+                value={textDetails.fontSize}
+                onChange={(e) =>
+                  setTextDetails((prev) => ({
+                    ...prev,
+                    fontSize: parseInt(e.target.value) || 12,
+                  }))
+                }
+              />
 
-    <p>Màu chữ:</p>
-    <ChromePicker
-      className="mx-auto"
-      color={textDetails.fill}
-      onChange={(color) =>
-        setTextDetails((prev) => ({ ...prev, fill: color.hex }))
-      }
-    />
+              <div className="flex justify-around mt-2">
+                <button
+                  className={`px-3 py-1 rounded ${
+                    textDetails.fontWeight === "bold"
+                      ? "bg-gray-300"
+                      : "bg-gray-100"
+                  }`}
+                  onClick={() =>
+                    setTextDetails((prev) => ({
+                      ...prev,
+                      fontWeight:
+                        prev.fontWeight === "bold" ? "normal" : "bold",
+                    }))
+                  }
+                >
+                  <b>B</b>
+                </button>
+                <button
+                  className={`px-3 py-1 rounded ${
+                    textDetails.fontStyle === "italic"
+                      ? "bg-gray-300"
+                      : "bg-gray-100"
+                  }`}
+                  onClick={() =>
+                    setTextDetails((prev) => ({
+                      ...prev,
+                      fontStyle:
+                        prev.fontStyle === "italic" ? "normal" : "italic",
+                    }))
+                  }
+                >
+                  <i>I</i>
+                </button>
+                <button
+                  className={`px-3 py-1 rounded ${
+                    textDetails.underline ? "bg-gray-300" : "bg-gray-100"
+                  }`}
+                  onClick={() =>
+                    setTextDetails((prev) => ({
+                      ...prev,
+                      underline: !prev.underline,
+                    }))
+                  }
+                >
+                  <u>U</u>
+                </button>
+              </div>
 
-    <p>Cỡ chữ:</p>
-    <input
-      type="number"
-      min="8"
-      max="128"
-      className="border border-gray-300 rounded px-2 py-1"
-      value={textDetails.fontSize}
-      onChange={(e) =>
-        setTextDetails((prev) => ({
-          ...prev,
-          fontSize: parseInt(e.target.value) || 12,
-        }))
-      }
-    />
+              <div className="flex items-center justify-center mt-4">
+                <div
+                  className="w-[64px] h-[48px] bg-indigo-300 flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black"
+                  onClick={() => {
+                    const canvas = fabricRef.current;
+                    if (canvas) {
+                      const active = canvas.getActiveObject();
+                      if (active && active.type === "textbox") {
+                        active.set({
+                          text: textDetails.text,
+                          fill: textDetails.fill,
+                          fontSize: textDetails.fontSize,
+                          fontWeight: textDetails.fontWeight,
+                          fontStyle: textDetails.fontStyle,
+                          underline: textDetails.underline,
+                        });
+                        canvas.requestRenderAll();
+                      }
+                    }
+                    toast.success(
+                      "Đã áp dụng và lưu làm mặc định cho Text mới!"
+                    );
+                  }}
+                >
+                  Áp dụng
+                </div>
+              </div>
+            </div>
+          )}
 
-    <div className="flex justify-around mt-2">
-      <button
-        className={`px-3 py-1 rounded ${textDetails.fontWeight === "bold" ? "bg-gray-300" : "bg-gray-100"}`}
-        onClick={() =>
-          setTextDetails((prev) => ({
-            ...prev,
-            fontWeight: prev.fontWeight === "bold" ? "normal" : "bold",
-          }))
-        }
-      >
-        <b>B</b>
-      </button>
-      <button
-        className={`px-3 py-1 rounded ${textDetails.fontStyle === "italic" ? "bg-gray-300" : "bg-gray-100"}`}
-        onClick={() =>
-          setTextDetails((prev) => ({
-            ...prev,
-            fontStyle: prev.fontStyle === "italic" ? "normal" : "italic",
-          }))
-        }
-      >
-        <i>I</i>
-      </button>
-      <button
-        className={`px-3 py-1 rounded ${textDetails.underline ? "bg-gray-300" : "bg-gray-100"}`}
-        onClick={() =>
-          setTextDetails((prev) => ({
-            ...prev,
-            underline: !prev.underline,
-          }))
-        }
-      >
-        <u>U</u>
-      </button>
-    </div>
+          {toolSelected === "image" && (
+            <div className="flex flex-col gap-y-2">
+              <p>URL ảnh:</p>
+              <input
+                type="text"
+                className="border border-gray-300 rounded px-2 py-1"
+                placeholder="https://example.com/image.png"
+                value={imageDetails.url}
+                onChange={(e) =>
+                  setImageDetails((prev) => ({ ...prev, url: e.target.value }))
+                }
+              />
 
-    <div className="flex items-center justify-center mt-4">
-      <div
-        className="w-[64px] h-[48px] bg-indigo-300 flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black"
-        onClick={() => {
-          const canvas = fabricRef.current;
-          if (canvas) {
-            const active = canvas.getActiveObject();
-            if (active && active.type === "textbox") {
-              active.set({
-                text: textDetails.text,
-                fill: textDetails.fill,
-                fontSize: textDetails.fontSize,
-                fontWeight: textDetails.fontWeight,
-                fontStyle: textDetails.fontStyle,
-                underline: textDetails.underline,
-              });
-              canvas.requestRenderAll();
-            }
-          }
-          toast.success("Đã áp dụng và lưu làm mặc định cho Text mới!");
-        }}
-      >
-        Áp dụng
-      </div>
-    </div>
-  </div>
-)}
+              <p>Hoặc tải hình từ máy:</p>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={async (e) => {
+                  const file = e.target.files[0];
+                  if (!file) return;
 
-{toolSelected === "image" && (
-  <div className="flex flex-col gap-y-2">
-    <p>URL ảnh:</p>
-    <input
-      type="text"
-      className="border border-gray-300 rounded px-2 py-1"
-      placeholder="https://example.com/image.png"
-      value={imageDetails.url}
-      onChange={(e) =>
-        setImageDetails((prev) => ({ ...prev, url: e.target.value }))
-      }
-    />
+                  try {
+                    // Chuyển file sang Base64
+                    const reader = new FileReader();
+                    reader.onloadend = async () => {
+                      const base64 = reader.result;
 
-    <p>Tỉ lệ scale (0.1 → 2):</p>
-    <input
-      type="number"
-      step="0.1"
-      min="0.1"
-      max="5"
-      value={imageDetails.scale}
-      onChange={(e) =>
-        setImageDetails((prev) => ({
-          ...prev,
-          scale: parseFloat(e.target.value) || 1,
-        }))
-      }
-    />
+                      // Upload lên server
+                      const { url } = await uploadBase64Image(base64);
 
-    <div className="flex items-center justify-center">
-      <div
-        className="w-[64px] h-[48px] bg-green-300 flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black"
-        onClick={() => {
-          toast.success("Ảnh mặc định đã được áp dụng cho công cụ Image!");
-        }}
-      >
-        Áp dụng
-      </div>
-    </div>
-  </div>
-)}
+                      // Cập nhật imageDetails
+                      setImageDetails((prev) => ({ ...prev, url }));
+                      toast.success("Upload hình thành công!");
+                    };
+                    reader.readAsDataURL(file);
+                  } catch (err) {
+                    console.error(err);
+                    toast.error("Upload thất bại!");
+                  }
+                }}
+              />
+
+              <p>Tỉ lệ scale (0.1 → 2):</p>
+              <input
+                type="number"
+                step="0.1"
+                min="0.1"
+                max="5"
+                value={imageDetails.scale}
+                onChange={(e) =>
+                  setImageDetails((prev) => ({
+                    ...prev,
+                    scale: parseFloat(e.target.value) || 1,
+                  }))
+                }
+              />
+
+              <div className="flex items-center justify-center">
+                <div
+                  className="w-[64px] h-[48px] bg-green-300 flex items-center justify-center cursor-pointer shadow-sm hover:shadow-black"
+                  onClick={() => {
+                    const canvas = fabricRef.current;
+                    if (!canvas) return;
+
+                    if (!imageDetails.url) {
+                      toast.error("Chưa có hình để thêm!");
+                      return;
+                    }
+
+                    // Thêm hình lên canvas
+                    fabric.Image.fromURL(imageDetails.url, (img) => {
+                      img.scale(imageDetails.scale || 1);
+                      canvas.add(img);
+                      canvas.setActiveObject(img);
+                      canvas.requestRenderAll();
+                    });
+
+                    toast.success("Đã thêm hình vào canvas!");
+                  }}
+                >
+                  Áp dụng
+                </div>
+              </div>
+            </div>
+          )}
 
           {toolSelected === "brush" && (
             <div className="flex flex-col gap-y-2">

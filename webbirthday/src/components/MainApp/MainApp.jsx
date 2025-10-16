@@ -29,27 +29,20 @@ function MainApp() {
     <Routes>
       <Route path="/login" element={<Login />} />
 
-      {/* Các Route cần đăng nhập */}
       <Route element={<ProtectedRoute />}>
-        {/* Các trang có layout chung */}
         <Route element={<MainLayout />}>
           <Route path="/cards" element={<CardManager />} />
 
-          {/* Các trang chỉ dành cho Admin */}
           <Route element={<AdminRoute />}>
             <Route path="/users" element={<Admin />} />
             <Route path="/templates" element={<TemplateManager />} />
           </Route>
         </Route>
 
-        {/* Trang edit dành cho Admin */}
         <Route path="/edit/:mode/:id" element={<EditPage />} />
-
-        {/* Trang xem cho user */}
         <Route path="/view/card/:id" element={<EditPage viewOnly={true} />} />
       </Route>
 
-      {/* Route mặc định */}
       <Route path="/" element={<Navigate to="/cards" replace />} />
     </Routes>
   );

@@ -5,8 +5,9 @@ import "react-toastify/dist/ReactToastify.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { ToastContainer } from "react-toastify";
-
+import { useAuth } from "./context/AuthContext.jsx";
 export default function App() {
+    const { user } = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(
     !!localStorage.getItem("token") // ✅ giữ login khi reload
   );
@@ -15,10 +16,10 @@ export default function App() {
     setIsLoggedIn(true);
   };
 
-  return (
-    <>
-      {isLoggedIn ? <MainApp /> : <Login onLogin={handleLogin} />}
-      <ToastContainer position="top-right" autoClose={3000} />
-    </>
-  );
+   return (
+     <>
+       {user ? <MainApp /> : <Login />}
+       <ToastContainer position="top-right" autoClose={3000} />
+     </>
+   );
 }

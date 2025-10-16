@@ -64,14 +64,38 @@ const UserDetailDrawer = ({ user, onClose }) => {
         </button>
 
         <h2>User Detail</h2>
-        <p><strong>Username:</strong> {user.username}</p>
-        <p><strong>Created At:</strong> {new Date(user.createdAt).toLocaleString()}</p>
+        <p>
+          <strong>Username:</strong> {user.username}
+        </p>
+        <p>
+          <strong>Created At:</strong>{" "}
+          {new Date(user.createdAt).toLocaleString()}
+        </p>
 
         <h3>Owned Cards</h3>
         {ownedCards.length > 0 ? (
           <ul>
             {ownedCards.map((card) => (
-              <li key={card._id}>{card.cardName}</li>
+              <li key={card._id} className={styles.ownedCardItem}>
+                {card.cardName}
+                <button
+                  className={styles.removeCardBtn}
+                  onClick={async () => {
+                    try {
+                      await updateCard(card._id, { owner: null });
+                      toast.info("Đã gỡ card khỏi user!");
+                      // Cập nhật lại list
+                      const res = await getCards();
+                      setCards(res.data);
+                    } catch (err) {
+                      console.error("Error removing card:", err);
+                      toast.error("Lỗi khi gỡ card!");
+                    }
+                  }}
+                >
+                  ✖
+                </button>
+              </li>
             ))}
           </ul>
         ) : (
@@ -80,7 +104,10 @@ const UserDetailDrawer = ({ user, onClose }) => {
 
         {/* Nút thêm card */}
         {!showAddCard ? (
-          <button onClick={() => setShowAddCard(true)} className={styles.addBtn}>
+          <button
+            onClick={() => setShowAddCard(true)}
+            className={styles.addBtn}
+          >
             ➕ Thêm Card
           </button>
         ) : (

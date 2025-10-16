@@ -2,31 +2,28 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
-// Component này chỉ cho phép user đã đăng nhập truy cập
+// Chỉ cho phép user đã login truy cập
 export const ProtectedRoute = () => {
   const { user } = useAuth();
-  if (!user) {
-    // Nếu chưa đăng nhập, chuyển hướng về trang login
-    return <Navigate to="/login" replace />;
-  }
-  return <Outlet />; // Nếu đã đăng nhập, hiển thị component con
+
+  // Chờ user load xong
+  if (user === undefined) return null; // hoặc render spinner/loading
+
+  if (!user) return <Navigate to="/login" replace />;
+
+  return <Outlet />;
 };
 
-// Component này chỉ cho phép user có role là 'admin' truy cập
+// Chỉ cho phép admin truy cập
 export const AdminRoute = () => {
   const { user } = useAuth();
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+  const token = localStorage.getItem("token");
 
-  // SỬA LỖI: Kiểm tra "user.isAdmin" thay vì "user.role"
-  if (!user.isAdmin) {
-    // Nếu không phải admin, chuyển hướng về trang card
-    return <Navigate to="/cards" replace />;
-  }
-    const token = localStorage.getItem("token");
-    if (!token) {
-    return <Navigate to="/login" replace />;
-    }
-  return <Outlet />; // Nếu là admin, hiển thị component con
+  if (user === undefined) return null;
+
+  if (!user || !token) return <Navigate to="/login" replace />;
+
+  if (!user.isAdmin) return <Navigate to="/cards" replace />;
+
+  return <Outlet />;
 };
