@@ -3,10 +3,10 @@ import styles from "./AdminBottomSection.module.css";
 import UserDetailDrawer from "../UserDetailDrawer/UserDetailDrawer";
 import { getUsers, updateUserStatus } from "../../../../services/userService";
 import { toast } from "react-toastify";
-const AdminBottomSection = () => {
+const AdminBottomSection = (props) => {
   const [accounts, setAccounts] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-
+  const { searchTerm } = props;
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -32,6 +32,10 @@ const AdminBottomSection = () => {
     }
   };
 
+  const filteredAccounts = accounts.filter((acc) =>
+    acc.username.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className={styles.adminBottomSection}>
       <table className={styles.accountTable}>
@@ -42,8 +46,9 @@ const AdminBottomSection = () => {
             <th>Status</th>
           </tr>
         </thead>
+
         <tbody>
-          {accounts.map((acc) => (
+          {filteredAccounts.map((acc) => (
             <tr key={acc._id} onDoubleClick={() => setSelectedUser(acc)}>
               <td>{acc.username}</td>
               <td>{acc.lastAccess || "N/A"}</td>

@@ -24,6 +24,9 @@ export const AdminRoute = () => {
     // Nếu không phải admin, chuyển hướng về trang card
     return <Navigate to="/cards" replace />;
   }
-
+    const token = localStorage.getItem("token");
+    if (!token) {
+    return <Navigate to="/login" replace />;
+    }
   return <Outlet />; // Nếu là admin, hiển thị component con
 };

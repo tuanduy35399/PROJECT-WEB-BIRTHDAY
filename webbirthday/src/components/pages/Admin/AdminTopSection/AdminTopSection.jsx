@@ -3,7 +3,7 @@ import styles from "./AdminTopSection.module.css";
 import { FaSearch } from "react-icons/fa";
 import ModalCreateUser from "../ModalCreateUser/ModalCreateUser";
 
-const AdminTopSection = () => {
+const AdminTopSection = ({ searchTerm, setSearchTerm }) => {
   const [showModalCreateUser, setShowModalCreateUser] = useState(false);
 
   return (
@@ -14,25 +14,29 @@ const AdminTopSection = () => {
           className={styles.pillBtn}
           onClick={() => setShowModalCreateUser(true)}
         >
-        + New User
+          + New User
         </button>
       </div>
 
-      {/* Modal tạo user */}
       <ModalCreateUser
         show={showModalCreateUser}
         setShow={setShowModalCreateUser}
       />
 
       <div className={styles.topActions}>
-        {/* Search bar */}
         <div className={styles.searchBar}>
           <FaSearch className={styles.searchIcon} />
-          <input type="text" placeholder="Search" />
+          <input
+            type="text"
+            placeholder="Search username..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
       </div>
     </div>
   );
 };
+
 
 export default AdminTopSection;

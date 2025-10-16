@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const UserController = {
-  // [POST] /api/users/createUser
+  // [POST] /api/users
   createUser: async (req, res) => {
     try {
       const { username, password, role } = req.body;
@@ -30,7 +30,7 @@ const UserController = {
       res.status(201).json({
         message: "User created successfully",
         user: {
-          id: newUser._id, // dùng _id thay cho userID
+          id: newUser._id,
           username: newUser.username,
           isAdmin: newUser.isAdmin,
           isActive: newUser.isActive,
@@ -48,33 +48,33 @@ const UserController = {
 
       const user = await User.findOne({ username });
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(400).json({ message: "User not found" });
       }
 
-      // so sánh password với hash
+      // So sánh password
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(400).json({ message: "Invalid credentials" });
+        return res.status(400).json({ message: "Wrong password" });
       }
 
-      // tạo token
+      // Tạo JWT token
       const token = jwt.sign(
         { id: user._id, isAdmin: user.isAdmin },
         process.env.JWT_SECRET,
         { expiresIn: "1d" }
       );
 
-      res.json({
-        message: "Login successful",
+      res.status(200).json({
+        message: "Login success",
         token,
         user: {
-          id: user._id,
+          _id: user._id,
           username: user.username,
           isAdmin: user.isAdmin,
         },
       });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ message: "Server error" });
     }
   },
 

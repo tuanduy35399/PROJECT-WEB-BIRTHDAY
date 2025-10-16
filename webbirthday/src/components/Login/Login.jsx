@@ -32,7 +32,7 @@ export default function Login() { // Xóa prop "onLogin" không cần thiết
       // Gọi hàm login từ context để cập nhật toàn bộ ứng dụng
       // Backend của bạn NÊN trả về cả thông tin user (gồm role)
       // Ví dụ: res.data = { token: "...", user: { _id: "...", username: "...", role: "admin" } }
-      login(res.data.user); 
+      login(res.data.user, res.data.token); 
 
       // Sau khi đăng nhập thành công, điều hướng đến trang /cards
       navigate("/cards", { replace: true });

@@ -12,13 +12,17 @@ export const AuthProvider = ({ children }) => {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  const login = (userData) => {
+  const login = (userData, token) => {
+    if (token) {
+      localStorage.setItem("token", token); // ✅ Lưu token
+    }
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
   };
 
   const logout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token"); 
     setUser(null);
   };
 
